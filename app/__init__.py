@@ -13,10 +13,8 @@ def create_app(config_class=Config):
     db.init_app(app)
     migrate.init_app(app, db)
 
-
-    from app.posts import bp as posts_bp
-    app.register_blueprint(posts_bp, url_prefix='/posts')
-
+    from app.main import bp as main_bp
+    app.register_blueprint(main_bp)    
     return app
 
 from app import db_models
