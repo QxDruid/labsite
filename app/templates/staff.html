@@ -9,10 +9,10 @@
   <div class="row">
 
     <! -- список сотрудников -->
-    <div id="main" class="col-9 col-sm-6 col-md-8 col-lg-8 text-center">            
+    <div id="main" class="col-10 col-sm-6 col-md-8 col-lg-8 text-center">            
     <! --  Карточка сотрудника-->
       {% for person in staff %}
-        {% include _person %}
+        {% include '_person.html'%}
       {% endfor %}
     </div>
 
@@ -24,7 +24,7 @@
         </div>          
                 
         {% for post in posts %}
-          {% include _post.html%}
+          {% include '_post.html'%}
         {% endfor %}
 
       </div>

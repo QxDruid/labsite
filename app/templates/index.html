@@ -7,9 +7,10 @@
 {% block content %}
 <div class="container-fluid">
     <div class="row">
-        <div id="main" class="col-11 col-sm-12 col-md-7 col-lg-8">
+        <div id="main" class="col-12 col-sm-12 col-md-7 col-lg-8">
             
             <! -- слайдер с фото -->
+            {% if slider_photos %}
             <div id="carousel" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
                     {% for i in slider_photos %}
@@ -33,18 +34,19 @@
                   <span class="carousel-control-next-icon" aria-hidden="true"></span>
                   <span class="sr-only">Next</span>
                 </a>
-              </div>
-            
+            </div>
+            {% endif %}
+
               <! -- Текст главной страницы (на мобильном экране скрыт и доступен по ссылке) -->
-              <div id="content" class="d-none d-md-block ">
+            <div id="content" class="d-none d-md-block ">
               
                 {% include 'main_text.html' %}  
 
-              </div>     
+            </div> 
         </div>
 
         <!--новостная лента -->
-        <div id="sidebar" class="col-sm-10 col-md-4 col-lg-3 col-xl-4">
+        <div id="sidebar" class="col-sm-12 col-md-4 col-lg-3 col-xl-4">
             <!-- структура новости -->
             <div class="container">
             <div class="text-center" id="news_header">
@@ -52,7 +54,7 @@
             </div>          
             
             {% for post in posts %}
-                {% include _post.html%}
+                {% include "_post.html" %}
             {% endfor %}
             
 

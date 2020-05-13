@@ -2,16 +2,16 @@
 <div class="card mb-3 staff_card" >
     <div class="row no-gutters">
         <div class="col-md-3">
-            <img src="{{ person.image }}" class="card-img" alt="IMAGE">
+            <img src="{{ person.Image }}" class="card-img" alt="Image">
         </div>
         <div class="col-md-9">
             <div class="card-body">
-                <h4 class="card-title">{{ person.fullname }}</h5>
+                <h4 class="card-title">{{ person.SecondName}}  {{ person.FirstName}} {{ person.MiddleName}}</h5>
                 <h5 class="card-text">
-                    {{ person.position }}
+                    {{ person.Position }}
                 </h5>
                 <p class="card-text">
-                    {{ person.info }}
+                    {{ person.Info }}
                 </p>
             </div>
         </div>

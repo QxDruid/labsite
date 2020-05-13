@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+
+
 {% block title %}
     Login
 {% endblock %}
@@ -7,21 +9,48 @@
 {% block content %}
      <div class="container-fluid ">
          <div class="row"  style=" min-height:89vh">
-        <div id="loginform" class="col-10 col-sm-8 col-md-6 col-lg-4 align-self-center">
-            <form>
-                <div class="form-group">
-                  <label for="loginpad">Login</label>
-                  <input type="email" class="form-control" id="loginpad" aria-describedby="emailHelp">
+        <div id="loginform" class="col-10 col-sm-8 col-md-6 col-lg-3 align-self-center">
+          {% with errors = get_flashed_messages() %}
+            {% for error in errors%}
+              <div class="alert alert-danger" role="alert" style="margin: 5px auto">
+                {{error}}
+              </div>
+            {% endfor %}
+          {% endwith %}
+
+            <form form action="" method="post" novalidate>
+                {{form.hidden_tag()}}
+                <div class="form-group" style="width: 100%;">
+                {{form.username.label}} <br />
+                {{form.username(class="form-control")}}
+
+                {% for error in form.errors.username %}
+                <div class="alert alert-danger" role="alert" style="margin: 5px auto">
+                  {{error}}
                 </div>
-                <div class="form-group">
-                  <label for="passwordpad">Password</label>
-                  <input type="password" class="form-control" id="passwordpad">
+                {% endfor %}
+                  
                 </div>
+
+                <div class="form-group">
+
+                {{form.password.label}} <br />
+                {{form.password(class="form-control")}}
+
+                {% for error in form.errors.password %}
+                <div class="alert alert-danger" role="alert" style="margin: 5px auto">
+                  {{error}}
+                </div>
+                {% endfor %}
+
+                </div>
+
                 <div class="form-group form-check">
-                  <input type="checkbox" class="form-check-input" id="submit">
-                  <label class="form-check-label" for="submit">Check me out</label>
+                  {{form.remember_me(class="form-check-label")}}
+                  {{form.remember_me.label}}
+                  
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                {{ form.submit() }}
             </form>
             </div>
         </div>
