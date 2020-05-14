@@ -1,12 +1,22 @@
-<div class="card post" style="width: 18rem;">
-    {% if post.Img %}
-        <img src="{{post.Image}}" class="card-img-top" alt="...">
+<div class="card post">
+    {% if post.Image %}
+        <img src="{{url_for('static', filename=post.Image)}}" class="card-img-top" alt="...">
     {% endif %}
         <div class="card-body">
       <h5 class="card-title">{{ post.Title }}</h5>
       <p class="card-text">{{ post.Description }}</p>
       {% if post.Fulltext %}
         <a href="#" class="btn btn-primary">Читать полностью</a>
+      {% endif %}
+
+      {% if current_user.is_authenticated %}
+      <form action="" method="POST" novalidate>
+        <div class="form-group">
+        {{ formDeleteNews.csrf_token() }}
+        {{ formDeleteNews.newsId(value = post.id)}}
+        {{ formDeleteNews.submitDeleteNews }}
+        </div>
+      </form>
       {% endif %}
     </div>
 </div>

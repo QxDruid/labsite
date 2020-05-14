@@ -12,7 +12,7 @@ class Slider_image(db.Model):
 
     @staticmethod
     def delete_image(index):
-        base = Slider_image.query.filter_by(index = index).first()
+        base = Slider_image.query.filter_by(Index = index).first()
         if base:
             db.session.delete(base)
             db.session.commit()
@@ -21,28 +21,40 @@ class Slider_image(db.Model):
 
     @staticmethod
     def set_image(index, image):
-        base = Slider_image.query.filter_by(index = index).first()
+        base = Slider_image.query.filter_by(Index = index).first()
         if base:
-            base.img = image
+            base.Image = image
         else:
-            base = Slider_image.query.order_by(Slider_image.index.desc()).first()
-            if base and index > base.index:
-                index = base.index + 1
+            base = Slider_image.query.order_by(Slider_image.Index.desc()).first()
+            if base and index > base.Index:
+                index = base.Index + 1
             base = Slider_image()
-            base.img = image
-            base.index = index
+            base.Image = image
+            base.Index = index
             db.session.add(base)
         db.session.commit()
 
 class News(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     Image = db.Column(db.String(32))
-    Title = db.Column(db.String(32), index=True)
+    Title = db.Column(db.String(32), index=True, unique=True)
     Description = db.Column(db.String(256))
     Fulltext = db.Column(db.String)
 
     def __repr__(self):
         return '<Id: {}, Title: {}>'.format(self.id, self.Title)
+
+    @staticmethod
+    def set_news(image, title, description, fulltext):
+        news = News()
+        news.Description = description
+        news.Title = title
+        news.Fulltext = fulltext
+        news.Image = image
+        db.session.add(news)
+        db.session.commit()
+
+
 
 class Person(db.Model):
     id = db.Column(db.Integer, primary_key = True)

@@ -13,15 +13,27 @@
             {% if slider_photos %}
             <div id="carousel" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
-                    {% for i in slider_photos %}
-                        <li data-target="#carousel" data-slide-to="{{i.index}}" 
-                        {% if  i.index  == 0 %} class="active" {% endif %} ></li>
+                    {% for photo in slider_photos %}
+                        <li data-target="#carousel" data-slide-to="{{photo.Index}}" 
+                        {% if  photo.Index  == 0 %} class="active" {% endif %} ></li>
                     {% endfor %}
                 </ol>
                 <div class="carousel-inner">
                     {% for photo in slider_photos %}
-                        <div class="carousel-item {% if photo.index == 0 %} active {% endif %}" >
-                            <img src="{{photo.img}}" class="d-block img-fluid mx-auto" alt="...">
+                        <div class="carousel-item {% if photo.Index == 0 %} active {% endif %}" >
+                            <img src="{{url_for('static',filename=photo.Image)}}" class="d-block img-fluid mx-auto" alt="...">
+                            {% if current_user.is_authenticated %}
+                            <div class="carousel-caption" >
+                                <form action="" method="post" novalidate>
+                                    <div class="form-group">
+                                    {{ formDelete.csrf_token() }}
+                                    {{formDelete.imageIndex(value =  photo.Index)}}
+                                    {{formDelete.submitDelete}}
+                                    </div>
+                                </form>
+                            </div>
+
+                            {% endif %}
                         </div>
                     {% endfor %}
                 </div>
@@ -37,6 +49,21 @@
             </div>
             {% endif %}
 
+            {% if current_user.is_authenticated %}
+            <form action="" method="post" enctype="multipart/form-data" novalidate>
+                <div class="form-group col-10 col-sm-7 col-md-9 col-lg-6 col-xl-5" id="addSliderPhoto">
+                    <h3>Добавить фото</h3>
+                    {{ formSetImage.csrf_token() }}
+
+                
+                    {{formSetImage.image(class="form-control col-12")}}
+                    <br />
+                    {{formSetImage.index(class="col-3")}}
+                    {{formSetImage.index.label(class="col-2")}}
+                    {{formSetImage.submitUpload}}
+                </div>
+            </form>
+            {% endif %}
               <! -- Текст главной страницы (на мобильном экране скрыт и доступен по ссылке) -->
             <div id="content" class="d-none d-md-block ">
               
@@ -46,15 +73,44 @@
         </div>
 
         <!--новостная лента -->
-        <div id="sidebar" class="col-sm-12 col-md-4 col-lg-3 col-xl-4">
+        <div id="sidebar" class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
             <!-- структура новости -->
             <div class="container">
+        
+            
+            {% if current_user.is_authenticated %}
+            <form action="" method="POST" enctype="multipart/form-data" novalidate>
+                <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-10" id="addNewsForm">
+                    <h3>Добавить новость</h3>
+                    <div class="form-group">
+                    {{ formAddNews.csrf_token() }}
+                    {{ formAddNews.image.label }}
+                    {{ formAddNews.image(class="form-control") }}
+                    </div>
+                    <div class="form-group">
+                    {{ formAddNews.title.label }}
+                    {{ formAddNews.title(class="form-control") }}
+                </div>
+                    <div class="form-group">
+                    {{ formAddNews.description.label }}
+                    {{ formAddNews.description(class="form-control") }}
+                    </div>
+                    {{ formAddNews.fulltext.label }}
+                    {{ formAddNews.fulltext(class="form-control") }}
+                    <br />
+                    {{ formAddNews.submitAddNews }}
+
+                </div>
+            </form>
+            {% endif %}
+
             <div class="text-center" id="news_header">
                 <span class="h2">Новости</span>
-            </div>          
-            
+            </div>  
             {% for post in posts %}
+                <div class="conteiner" style="margin: 0 auto;">
                 {% include "_post.html" %}
+            </div>
             {% endfor %}
             
 
