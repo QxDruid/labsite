@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, HiddenField, IntegerField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, HiddenField, IntegerField, TextAreaField
 from wtforms.validators import DataRequired, InputRequired
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 
@@ -23,10 +23,24 @@ class SetImageForm(FlaskForm):
 class AddNewsForm(FlaskForm):
     image = FileField('load image', validators=[FileAllowed(["jpg", "png"], 'Images only!')])
     title = StringField('title', validators=[DataRequired()])
-    description = StringField('description', validators=[DataRequired()])
-    fulltext = StringField('full text')
+    description = TextAreaField('description', validators=[DataRequired()])
+    fulltext = TextAreaField('full text')
     submitAddNews = SubmitField('Upload')
 
 class DeleteNewsForm(FlaskForm):
     newsId = HiddenField()
     submitDeleteNews = SubmitField('Delete')
+
+
+class PersonAddForm(FlaskForm):
+    name = StringField('Имя', validators=[DataRequired()])
+    secondName = StringField('Фамилия', validators=[DataRequired()])
+    middleName = StringField('Отчество', validators=[DataRequired()])
+    position = StringField('Должность', validators=[DataRequired()])
+    info = TextAreaField('О себе', validators=[DataRequired()])
+    image = FileField('Загрузить фото', validators=[FileRequired(), FileAllowed(["jpg", "png"], 'Images only!')])
+    submitAddPerson = SubmitField('Submit')
+
+class DeleteForm(FlaskForm):
+    Id = HiddenField()
+    submitDelete = SubmitField('Delete')

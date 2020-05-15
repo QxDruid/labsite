@@ -18,14 +18,14 @@
     </div>
 
     <! -- новостная лента (на маленьком экране скрыта) -->
-    <div id="sidebar" class="col-md-3 col-lg-3 col-xl-4 d-none d-md-block ">
+    <div id="sidebar" class="col-md-4 col-lg-4 col-xl-3 d-none d-md-block ">
       <div class="container">
         <div class="text-center" id="news_header">
           <span class="h2">Новости</span>
         </div>          
                 
         {% for post in posts %}
-          {% include _post.html%}
+          {% include '_post.html' %}
         {% endfor %}
 
       </div>

@@ -9,7 +9,38 @@
   <div class="row">
 
     <! -- список сотрудников -->
-    <div id="main" class="col-10 col-sm-6 col-md-8 col-lg-8 text-center">            
+    <div id="main" class="col-10 col-sm-8 col-md-8 col-lg-8 text-center">      
+      {% if current_user.is_authenticated %}
+      <div class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6" style="margin: 0 auto;">
+        <form action="{{ url_for('main.addPerson') }}" method="POST" enctype="multipart/form-data" novalidate>
+          {{ formPersonAdd.csrf_token() }}
+          <div class="form-group" id="addPersonForm">
+            <h3 style="text-align: center;">Добавить сотрудника</h3>
+            {{ formPersonAdd.name.label }}
+            {{ formPersonAdd.name(class="form-control") }}
+
+            {{ formPersonAdd.secondName.label }}
+            {{ formPersonAdd.secondName(class="form-control") }}
+
+            {{ formPersonAdd.middleName.label }}
+            {{ formPersonAdd.middleName(class="form-control") }}
+
+            {{ formPersonAdd.position.label }}
+            {{ formPersonAdd.position(class="form-control") }}
+
+            {{ formPersonAdd.info.label }}
+            {{ formPersonAdd.info(class="form-control") }}
+
+            {{ formPersonAdd.image.label }}
+            {{ formPersonAdd.image(class="form-control") }}
+            <br />
+            {{ formPersonAdd.submitAddPerson(class="form-control") }}
+          </div>
+
+        </form>
+      </div>
+      {% endif %}
+
     <! --  Карточка сотрудника-->
       {% for person in staff %}
         {% include '_person.html'%}
@@ -17,7 +48,7 @@
     </div>
 
     <! -- новостная лента (на маленьком экране скрыта) -->
-    <div id="sidebar" class="col-lg-3 col-xl-4 d-none d-lg-block ">
+    <div id="sidebar" class="col-lg-4 col-xl-3 d-none d-lg-block ">
       <div class="container">
         <div class="text-center" id="news_header">
           <span class="h2">Новости</span>

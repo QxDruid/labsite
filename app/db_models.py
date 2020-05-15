@@ -8,7 +8,7 @@ class Slider_image(db.Model):
     Image = db.Column(db.String(32))
 
     def __repr__(self):
-        return '<index: {}, img: {}>'.format(self.index, self.img)
+        return '<index: {}, img: {}>'.format(self.Index, self.Image)
 
     @staticmethod
     def delete_image(index):
@@ -53,6 +53,18 @@ class News(db.Model):
         news.Image = image
         db.session.add(news)
         db.session.commit()
+    
+    @staticmethod
+    def edit_news(id, image, title, description, fulltext):
+        news = News.query.get(id)
+        news.Image = image
+        news.Title = title
+        news.Description = description
+        news.Fulltext = fulltext
+
+        db.session.add(news)
+        db.session.commit()
+
 
 
 
@@ -68,6 +80,26 @@ class Person(db.Model):
     def __repr__(self):
         return '<Id: {}, Fullname: {}>'.format(self.id, self.FirstName + self.MiddleName + self.SecondName)
 
+    @staticmethod
+    def set_person(name, secondName, middleName, position, info, image):
+        pers = Person()
+        pers.FirstName = name
+        pers.SecondName = secondName
+        pers.MiddleName = middleName
+        pers.Position = position
+        pers.Info = info
+        pers.Image = image
+        db.session.add(pers)
+        db.session.commit()
+
+    @staticmethod
+    def del_person(pers):
+        db.session.delete(pers)
+        db.session.commit()
+
+    @staticmethod
+    def edit_person(id, name, secondName, middleName, position, info, image):
+        pass
 class Research(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     Image = db.Column(db.String(32))
