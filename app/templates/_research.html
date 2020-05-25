@@ -2,19 +2,34 @@
     <div class="row no-gutters">
 
       <div class="col-md-4">
-        <img src="{{ research.image }}" class="card-img" alt="image">
+        <img src="{{ url_for('static', filename=research.Image) }}" class="card-img" alt="image">
       </div>
       
       <div class="col-md-8">
         <div class="card-body">
 
-          <h4 class="card-title">
+          <h3 class="card-title">
               {{ research.Title }}
-            </h4>
+            </h3>
           
           <p class="card-text">
             {{ research.Description }} 
           </p>
+
+          {% if current_user.is_authenticated %}
+          <div style="display: inline-block;">
+            <form action="{{ url_for('main.delresearch') }}" method="POST" novalidate>
+              {{ formDeleteResearch.csrf_token() }}
+              <div class="form-group">
+                {{ formDeleteResearch.Id(value = research.id) }}
+                {{ formDeleteResearch.submitDelete(class = "btn btn-dark") }}
+              </div>
+            </form>
+          </div>
+          <button type="button" class="btn btn-dark">
+            <a href="{{ url_for('main.editresearch', researchId=research.id) }}" style="text-decoration: none; color:white;">Редактировать</a>
+          </button>
+          {% endif %}
 
         </div>
       </div>

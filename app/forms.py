@@ -8,28 +8,28 @@ class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
-    submit = SubmitField('Sign In')
+    submit = SubmitField('Вход')
 
 class DeleteImageForm(FlaskForm):
     imageIndex = HiddenField()
-    submitDelete = SubmitField('Delete')
+    submitDelete = SubmitField('Удалить')
 
 
 class SetImageForm(FlaskForm):
     index = IntegerField('index')
     image = FileField('load image', validators=[FileRequired(), FileAllowed(["jpg", "png"], 'Images only!')])
-    submitUpload = SubmitField('Upload')
+    submitUpload = SubmitField('Загрузить')
 
 class AddNewsForm(FlaskForm):
     image = FileField('load image', validators=[FileAllowed(["jpg", "png"], 'Images only!')])
     title = StringField('title', validators=[DataRequired()])
     description = TextAreaField('description', validators=[DataRequired()])
     fulltext = TextAreaField('full text')
-    submitAddNews = SubmitField('Upload')
+    submitAddNews = SubmitField('Загрузить')
 
 class DeleteNewsForm(FlaskForm):
     newsId = HiddenField()
-    submitDeleteNews = SubmitField('Delete')
+    submitDeleteNews = SubmitField('Удалить')
 
 
 class PersonAddForm(FlaskForm):
@@ -43,4 +43,10 @@ class PersonAddForm(FlaskForm):
 
 class DeleteForm(FlaskForm):
     Id = HiddenField()
-    submitDelete = SubmitField('Delete')
+    submitDelete = SubmitField('Удалить')
+
+class addResearchForm(FlaskForm):
+    title = StringField('Заголовок', validators=[DataRequired()])
+    description = TextAreaField('Описание', validators=[DataRequired()])
+    image = FileField('Загрузить фото', validators=[FileAllowed(["jpg", "png"], 'Images only!')])
+    submit = SubmitField('Загрузить')

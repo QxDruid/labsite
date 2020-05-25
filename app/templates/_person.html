@@ -6,23 +6,27 @@
         </div>
         <div class="col-md-9">
             <div class="card-body">
-                <h4 class="card-title">{{ person.SecondName}}  {{ person.FirstName}} {{ person.MiddleName}}</h5>
+                <h4 class="card-title">{{ person.SecondName}}  {{ person.FirstName}} {{ person.MiddleName}}</h4>
                 <h5 class="card-text">
                     {{ person.Position }}
                 </h5>
                 <p class="card-text">
                     {{ person.Info }}
                 </p>
-            </div>
+            
             {% if current_user.is_authenticated %}
-            <form action="{{ url_for('main.delperson') }}" method="POST" novalidate>
+            <form action="{{ url_for('main.delperson') }}" method="POST" novalidate style="display: inline-block;">
                 <div class="form-group">
                     {{ formDelete.csrf_token() }}
                     {{ formDelete.Id(value = person.id)}}
                     {{ formDelete.submitDelete(class="btn btn-dark") }}
-                  </div>
+                </div>
             </form>
-        {% endif %}
+            <button type="button" class="btn btn-dark">
+                <a href="{{ url_for('main.editperson', personId=person.id) }}" style="text-decoration: none; color:white;">Редактировать</a>
+            </button>
+            {% endif %}
+        </div>
         </div>
         
     </div>

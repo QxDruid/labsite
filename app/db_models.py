@@ -100,6 +100,7 @@ class Person(db.Model):
     @staticmethod
     def edit_person(id, name, secondName, middleName, position, info, image):
         pass
+    
 class Research(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     Image = db.Column(db.String(32))

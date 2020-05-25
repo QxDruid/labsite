@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content%}
+<div class="conteiner">
+    <div class="row justify-content-center" style="min-height: 100vh; margin:0 auto;">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+            <form action="" method="POST" enctype="multipart/form-data" novalidate>
+                <div class="form-group" id="addNewsForm">
+                    <h3>Редактировать исследование</h3>
+                    <div class="form-group">
+                    {{ formEditResearch.csrf_token() }}
+                    {{ formEditResearch.image.label }}
+                    {{ formEditResearch.image(class="form-control", value=research.Image) }}
+                    </div>
+                    <div class="form-group">
+                    {{ formEditResearch.title.label }}
+                    {{ formEditResearch.title(class="form-control", value=research.Title) }}
+                    </div>
+                    <div class="form-group">
+                    {{ formEditResearch.description.label }}
+                    {{ formEditResearch.description(class="form-control", value=research.Description) }}
+                    </div>
+                    <br />
+                    {{ formEditResearch.submit(class="btn btn-dark") }}
+
+                </div>
+            </form>
+        </div>
+    
+       
+        
+        <div class="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8" >
+            <div class="card staff_card" style="margin-left: auto; margin-right:auto">
+                <div class="row card-body">
+                    <div class="col-8 col-sm-6 col-md-8 col-lg-4 col-xl-4" style="margin: 0 auto;">
+                        <img src="{{ url_for('static', filename=research.Image) }}" class="card-img" alt="image">
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-8 col-xl-8">
+                        <h3 class="card-title">
+                            {{ research.Title }}
+                        </h3>
+            
+                        <p class="card-text">
+                            {{ research.Description }} 
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content%}

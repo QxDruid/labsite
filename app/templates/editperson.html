@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content%}
+<div class="conteiner">
+    <div class="row justify-content-center" style="min-height: 100vh; margin:0 auto;">
+        {% if current_user.is_authenticated %}
+        <div class="col-10 col-sm-10 col-md-6 col-lg-4 col-xl-4" style="margin: 0 auto; padding-left:5%">
+          <form action="{{ url_for('main.addPerson') }}" method="POST" enctype="multipart/form-data" novalidate>
+            {{ formEditPerson.csrf_token() }}
+            <div class="form-group" id="addPersonForm">
+              <h3 style="text-align: center;">Добавить сотрудника</h3>
+              {{ formEditPerson.name.label }}
+              {{ formEditPerson.name(class="form-control") }}
+  
+              {{ formEditPerson.secondName.label }}
+              {{ formEditPerson.secondName(class="form-control") }}
+  
+              {{ formEditPerson.middleName.label }}
+              {{ formEditPerson.middleName(class="form-control") }}
+  
+              {{ formEditPerson.position.label }}
+              {{ formEditPerson.position(class="form-control") }}
+  
+              {{ formEditPerson.info.label }}
+              {{ formEditPerson.info(class="form-control") }}
+  
+              {{ formEditPerson.image.label }}
+              {{ formEditPerson.image(class="form-control") }}
+              <br />
+              <div style="text-align:center;">
+              {{ formEditPerson.submitAddPerson(class="btn btn-dark") }}
+              </div>
+            </div>
+  
+          </form>
+        </div>
+        {% endif %}
+    
+       
+        
+        <div class="col-12 col-sm-12 col-md-12 col-lg-8 col-xl-8" >
+            <div class="card mb-3 staff_card" >
+                <div class="row no-gutters">
+                    <div class="col-8 col-md-3 col-xl-2" style="margin:0 auto">
+                        <img src="{{ url_for('static', filename=person.Image) }}" class="card-img" alt="Image">
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card-body">
+                            <h4 class="card-title">{{ person.SecondName}}  {{ person.FirstName}} {{ person.MiddleName}}</h4>
+                            <h5 class="card-text">
+                                {{ person.Position }}
+                            </h5>
+                            <p class="card-text">
+                                {{ person.Info }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content%}

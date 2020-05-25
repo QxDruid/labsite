@@ -2,8 +2,8 @@ from app.main import bp
 from flask import render_template, url_for, request, redirect, flash
 from app import db
 from app.db_models import Slider_image, News, Person, Research, User
-from app.forms import LoginForm, DeleteImageForm, SetImageForm, AddNewsForm, DeleteNewsForm, PersonAddForm, DeleteForm
-from flask_login import current_user, login_user, logout_user
+from app.forms import LoginForm, DeleteImageForm, SetImageForm, AddNewsForm, DeleteNewsForm, PersonAddForm, DeleteForm, addResearchForm
+from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.utils import secure_filename
 import os
 import config
@@ -64,15 +64,20 @@ def staff():
     )
 
 # рендер страницы исследования
-@bp.route('/research/')
+@bp.route('/research/', methods = ["POST", "GET"])
 def research():
-    researches = Research.query.all()
-    posts = News.query.order_by(News.id.desc()).all()
+    formAddResearch = addResearchForm()
+    formDeleteResearch = DeleteForm()
     formDeleteNews = DeleteNewsForm()
+
+    researches = Research.query.order_by(Research.Title).all()
+    posts = News.query.order_by(News.id.desc()).all()
     return render_template('research.html',
         researches=researches,
         posts=posts,
-        formDeleteNews=formDeleteNews
+        formDeleteResearch=formDeleteResearch,
+        formDeleteNews=formDeleteNews,
+        formAddResearch = formAddResearch
     )
 # форма логина для администрации
 @bp.route("/login/", methods = ["POST", "GET"])
@@ -100,6 +105,7 @@ def logout():
 
 # редактор новости
 @bp.route("/editnews/<newsId>",methods=["POST", "GET"])
+@login_required
 def editnews(newsId):
     form = AddNewsForm()
     post = News.query.get(newsId)
@@ -131,6 +137,7 @@ def editnews(newsId):
 
 # обработка удаления новостей
 @bp.route('/delnews/', methods=["POST"])
+@login_required
 def delnews():
     formDeleteNews= DeleteNewsForm()
     if formDeleteNews.submitDeleteNews.data and formDeleteNews.validate_on_submit():
@@ -145,6 +152,7 @@ def delnews():
 
 # обработка добавления новостей
 @bp.route('/addnews/', methods=["POST"])
+@login_required
 def addnews():
 
     formAddNews = AddNewsForm()
@@ -162,6 +170,7 @@ def addnews():
     return redirect(url_for("main.index"))
 
 @bp.route('/addPerson/', methods=["POST"])
+@login_required
 def addPerson():
     form = PersonAddForm()
     if form.validate_on_submit():
@@ -180,6 +189,7 @@ def addPerson():
     return redirect(url_for('main.staff'))
 
 @bp.route('/delperson/', methods=["POST"])
+@login_required
 def delperson():
     formDelete = DeleteForm()
     if formDelete.validate_on_submit():
@@ -193,3 +203,83 @@ def delperson():
         
     return redirect(url_for('main.staff'))
 
+@bp.route('/addresearch/', methods=["POST"])
+@login_required
+def addresearch():
+    form = addResearchForm()
+    if form.validate_on_submit():
+        research = Research()
+        research.Title = form.title.data
+        research.Description = form.description.data
+        print(form.description.data)
+        f = form.image.data
+        filename = secure_filename(f.filename)
+        f.save(os.path.join(config.basedir, "app/static/img/ResearchImages/{}".format(filename)))
+        research.Image = "img/ResearchImages/{}".format(filename)
+        db.session.add(research)
+        db.session.commit()
+    return redirect(url_for("main.research"))
+
+@bp.route("/delresearch/", methods=["POST"])
+@login_required
+def delresearch():
+    form = DeleteForm()
+    if form.validate_on_submit():
+        research = Research.query.get(form.Id.data)
+        try:
+            os.remove(os.path.join(config.basedir, "app/static/{}".format(research.Image)))
+        except:
+            pass # сделать флеш что нет такой картинки, и было все удалено
+
+        db.session.delete(research)
+        db.session.commit()
+    return redirect(url_for("main.research"))
+
+@bp.route("/editresearch/<researchId>", methods=["POST", "GET"])
+@login_required
+def editresearch(researchId):
+    formEditResearch = addResearchForm()
+    research = Research.query.get(researchId)
+
+    if formEditResearch.validate_on_submit():
+        if formEditResearch.image.data:
+            f = formEditResearch.image.data
+            filename = secure_filename(f.filename)
+            try:
+                os.remove(os.path.join(config.basedir, "app/static/{}".format(research.Image)))
+            except:
+                pass
+            f.save(os.path.join(config.basedir,"app/static/img/ResearchImages/{}".format(filename)))
+            research.Image = "img/ResearchImages/{}".format(filename)
+        
+        
+        research.Description = formEditResearch.description.data
+        research.Title = formEditResearch.title.data
+        db.session.add(research)
+        db.session.commit()
+        return redirect(url_for('main.editresearch', researchId=researchId))
+
+    formEditResearch.title.data = research.Title
+    formEditResearch.description.data = research.Description
+    formEditResearch.image.data = research.Image
+
+    return render_template('editresearch.html',
+        research=research,
+        formEditResearch=formEditResearch
+    )
+
+
+@bp.route("/editperson/<personId>", methods=["POST","GET"])
+@login_required
+def editperson(personId):
+    formEditPerson = PersonAddForm()
+    person = Person.query.get(personId)
+    formEditPerson.name.data = person.FirstName
+    formEditPerson.middleName.data  = person.MiddleName
+    formEditPerson.secondName.data  = person.SecondName
+    formEditPerson.position.data  = person.Position
+    formEditPerson.info.data  = person.Info
+    return render_template("editperson.html",
+        person=person,
+        formEditPerson=formEditPerson
+    )

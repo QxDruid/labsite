@@ -15,15 +15,17 @@
                     <div class="form-group">
                     {{ form.title.label }}
                     {{ form.title(class="form-control") }}
-                </div>
+                    </div>
                     <div class="form-group">
                     {{ form.description.label }}
                     {{ form.description(class="form-control") }}
                     </div>
+                    <div class="form-group">
                     {{ form.fulltext.label }}
                     {{ form.fulltext(class="form-control") }}
+                    </div>
                     <br />
-                    {{ form.submitAddNews }}
+                    {{ form.submitAddNews(class="btn btn-dark") }}
 
                 </div>
             </form>
