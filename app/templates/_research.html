@@ -13,7 +13,9 @@
             </h3>
           
           <p class="card-text">
-            {{ research.Description }} 
+            {% autoescape false %}
+              {{ research.Description }} 
+            {% endautoescape %}
           </p>
 
           {% if current_user.is_authenticated %}

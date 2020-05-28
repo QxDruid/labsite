@@ -17,21 +17,63 @@
           <div class="form-group" id="addPersonForm">
             <h3 style="text-align: center;">Добавить сотрудника</h3>
             {{ formPersonAdd.name.label }}
+            {% with errors = get_flashed_messages(category_filter=["error_name"])%}
+              {% for error in errors %}
+                <div class="alert alert-danger" role="alert">
+                  {{error}}
+                </div>
+              {% endfor %}
+            {% endwith %}
             {{ formPersonAdd.name(class="form-control") }}
 
             {{ formPersonAdd.secondName.label }}
+            {% with errors = get_flashed_messages(category_filter=["error_secondname"])%}
+            {% for error in errors %}
+              <div class="alert alert-danger" role="alert">
+                {{error}}
+              </div>
+            {% endfor %}
+          {% endwith %}
             {{ formPersonAdd.secondName(class="form-control") }}
 
             {{ formPersonAdd.middleName.label }}
+            {% with errors = get_flashed_messages(category_filter=["error_middlename"])%}
+            {% for error in errors %}
+              <div class="alert alert-danger" role="alert">
+                {{error}}
+              </div>
+            {% endfor %}
+          {% endwith %}
             {{ formPersonAdd.middleName(class="form-control") }}
 
             {{ formPersonAdd.position.label }}
+            {% with errors = get_flashed_messages(category_filter=["error_position"]) %}
+            {% for error in errors %}
+              <div class="alert alert-danger" role="alert">
+                {{error}}
+              </div>
+            {% endfor %}
+          {% endwith %}
             {{ formPersonAdd.position(class="form-control") }}
 
             {{ formPersonAdd.info.label }}
+            {% with errors = get_flashed_messages(category_filter=["error_info"])%}
+            {% for error in errors %}
+              <div class="alert alert-danger" role="alert">
+                {{error}}
+              </div>
+            {% endfor %}
+          {% endwith %}
             {{ formPersonAdd.info(class="form-control") }}
 
             {{ formPersonAdd.image.label }}
+            {% with errors = get_flashed_messages(category_filter=["error_image"])%}
+            {% for error in errors %}
+              <div class="alert alert-danger" role="alert">
+                {{error}}
+              </div>
+            {% endfor %}
+          {% endwith %}
             {{ formPersonAdd.image(class="form-control") }}
             <br />
             <div style="text-align:center;">

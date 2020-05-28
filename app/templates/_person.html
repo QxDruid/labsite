@@ -11,7 +11,9 @@
                     {{ person.Position }}
                 </h5>
                 <p class="card-text">
+                    {% autoescape false %}
                     {{ person.Info }}
+                    {% endautoescape %}
                 </p>
             
             {% if current_user.is_authenticated %}

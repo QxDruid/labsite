@@ -1,8 +1,8 @@
 from app.main import bp
 from flask import render_template, url_for, request, redirect, flash
 from app import db
-from app.db_models import Slider_image, News, Person, Research, User
-from app.forms import LoginForm, DeleteImageForm, SetImageForm, AddNewsForm, DeleteNewsForm, PersonAddForm, DeleteForm, addResearchForm
+from app.db_models import Slider_image, News, Person, Research, User, Publication
+from app.forms import *
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.utils import secure_filename
 import os
@@ -185,6 +185,19 @@ def addPerson():
             form.info.data, 
             'img/StaffImages/{}'.format(filename)
             )
+    else:
+        if not form.name.data:
+            flash("Введите имя",'error_name')
+        if not form.secondName.data:
+            flash("Введите фамилию",'error_secondname')
+        if not form.middleName.data:
+            flash("Введите отчество",'error_middlename')
+        if not form.image.data:
+            flash("Выберите изображение",'error_image')
+        if not form.position.data:
+            flash("Введите должность",'error_position')
+        if not form.info.data:
+            flash("Введите описание",'error_info')
 
     return redirect(url_for('main.staff'))
 
@@ -211,13 +224,20 @@ def addresearch():
         research = Research()
         research.Title = form.title.data
         research.Description = form.description.data
-        print(form.description.data)
         f = form.image.data
         filename = secure_filename(f.filename)
         f.save(os.path.join(config.basedir, "app/static/img/ResearchImages/{}".format(filename)))
         research.Image = "img/ResearchImages/{}".format(filename)
         db.session.add(research)
         db.session.commit()
+    else:
+        if not form.title.data:
+            flash("Введите заголовок",'error_title')
+        if not form.image.data:
+            flash("Выберите изображение",'error_image')
+        if not form.description.data:
+            flash("Введите описание",'error_description')
+
     return redirect(url_for("main.research"))
 
 @bp.route("/delresearch/", methods=["POST"])
@@ -238,9 +258,10 @@ def delresearch():
 @bp.route("/editresearch/<researchId>", methods=["POST", "GET"])
 @login_required
 def editresearch(researchId):
-    formEditResearch = addResearchForm()
+    formEditResearch = editResearchForm()
     research = Research.query.get(researchId)
 
+    # Если все поля формы валидны
     if formEditResearch.validate_on_submit():
         if formEditResearch.image.data:
             f = formEditResearch.image.data
@@ -259,10 +280,17 @@ def editresearch(researchId):
         db.session.commit()
         return redirect(url_for('main.editresearch', researchId=researchId))
 
+    # если была отправка формы но поля не валидны (иначе мы бы уже ушли в редирект выше)
+    if request.method == "POST":
+        if not formEditResearch.title.data:
+            flash("Заголовок не может быть пустым", "error_title")
+        if not formEditResearch.description.data:
+            flash("Описание не может быть пустым", "error_description")
+        return redirect(url_for('main.editresearch', researchId=researchId))
+
+    # если только пришли на страницу через гет
     formEditResearch.title.data = research.Title
     formEditResearch.description.data = research.Description
-    formEditResearch.image.data = research.Image
-
     return render_template('editresearch.html',
         research=research,
         formEditResearch=formEditResearch
@@ -272,14 +300,90 @@ def editresearch(researchId):
 @bp.route("/editperson/<personId>", methods=["POST","GET"])
 @login_required
 def editperson(personId):
-    formEditPerson = PersonAddForm()
+    formEditPerson = PersonEditForm()
     person = Person.query.get(personId)
+
+    if formEditPerson.validate_on_submit():
+        if formEditPerson.image.data:
+            f = formEditPerson.image.data
+            filename = secure_filename(f.filename)
+            try:
+                os.remove(os.path.join(config.basedir, "app/static/{}".format(person.Image)))
+            except:
+                pass
+            f.save(os.path.join(config.basedir, "app/static/img/PersonImage/{}".format(filename)))
+            person.Image = "img/PersonImage/{}".format(filename)
+        
+        person.FirstName = formEditPerson.name.data
+        person.SecondName = formEditPerson.secondName.data
+        person.MiddleName = formEditPerson.middleName.data
+        person.Info = formEditPerson.info.data
+        person.Position = formEditPerson.position.data
+        db.session.add(person)
+        db.session.commit()
+        return redirect(url_for("main.editperson", personId = personId))
+
+    elif request.method == "POST":
+        if not formEditPerson.name.data:
+            flash("Введите Имя", "error_name")
+        if not formEditPerson.secondName.data:
+            flash("Введите Фамилию", "error_secondname")
+        if not formEditPerson.middleName.data:
+            flash("Введите Отчество", "error_middlename")
+        if not formEditPerson.info.data:
+            flash("Введите описание", "error_info")
+        if not formEditPerson.position.data:
+            flash("Введите должность", "error_position")
+        
+        return redirect(url_for('main.editperson', personId = personId))
+
     formEditPerson.name.data = person.FirstName
     formEditPerson.middleName.data  = person.MiddleName
     formEditPerson.secondName.data  = person.SecondName
     formEditPerson.position.data  = person.Position
     formEditPerson.info.data  = person.Info
+
     return render_template("editperson.html",
         person=person,
         formEditPerson=formEditPerson
     )
+
+@bp.route("/contacts/")
+def contacts():
+    return render_template("contacts.html")
+
+@bp.route("/public/<active_year>", methods=["POST", "GET"])
+def public(active_year):
+    form = PublicationAddForm()
+    formDelete = DeleteForm()
+    list_ = []
+    print("qqqqqq")
+
+    if form.validate_on_submit():
+        print("asdasdasdasd")
+        new_public = Publication()
+        new_public.Text = form.text.data
+        new_public.Year = form.year.data
+        new_public.DOI = form.doi.data
+        db.session.add(new_public)
+        db.session.commit()
+        return redirect(url_for('main.public', active_year=active_year))
+
+    if formDelete.validate_on_submit():
+        public_delete = Publication.query.get(formDelete.Id.data)
+        db.session.delete(public_delete)
+        db.session.commit()
+        return redirect(url_for('main.public', active_year=active_year))
+
+
+    for i in range(2030, 2005, -1):
+        if Publication.query.filter_by(Year = i).first():
+            if active_year == '0':
+                active_year = str(i)
+            list_.append(str(i))
+    form.year.data = active_year
+
+    publics = Publication.query.filter_by(Year = active_year).all()
+
+
+    return render_template("publications.html", active_year=active_year, years = list_, publics = publics, form=form, formDelete=formDelete)

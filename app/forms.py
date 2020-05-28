@@ -41,6 +41,15 @@ class PersonAddForm(FlaskForm):
     image = FileField('Загрузить фото', validators=[FileRequired(), FileAllowed(["jpg", "png"], 'Images only!')])
     submitAddPerson = SubmitField('Submit')
 
+class PersonEditForm(FlaskForm):
+    name = StringField('Имя', validators=[DataRequired()])
+    secondName = StringField('Фамилия', validators=[DataRequired()])
+    middleName = StringField('Отчество', validators=[DataRequired()])
+    position = StringField('Должность', validators=[DataRequired()])
+    info = TextAreaField('О себе', validators=[DataRequired()])
+    image = FileField('Загрузить фото', validators=[FileAllowed(["jpg", "png"], 'Images only!')])
+    submitAddPerson = SubmitField('Submit')
+
 class DeleteForm(FlaskForm):
     Id = HiddenField()
     submitDelete = SubmitField('Удалить')
@@ -48,5 +57,17 @@ class DeleteForm(FlaskForm):
 class addResearchForm(FlaskForm):
     title = StringField('Заголовок', validators=[DataRequired()])
     description = TextAreaField('Описание', validators=[DataRequired()])
+    image = FileField('Загрузить фото', validators=[FileRequired(), FileAllowed(["jpg", "png"], 'Images only!')])
+    submit = SubmitField('Загрузить')
+
+class editResearchForm(FlaskForm):
+    title = StringField('Заголовок', validators=[DataRequired()])
+    description = TextAreaField('Описание', validators=[DataRequired()])
     image = FileField('Загрузить фото', validators=[FileAllowed(["jpg", "png"], 'Images only!')])
     submit = SubmitField('Загрузить')
+
+class PublicationAddForm(FlaskForm):
+    year = StringField('Год', validators=[DataRequired()])
+    text = TextAreaField('Литературная ссылка', validators=[DataRequired()])
+    doi = StringField('DOI', validators=[DataRequired()])
+    submit = SubmitField('Опубликовать')

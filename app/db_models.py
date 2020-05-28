@@ -120,6 +120,13 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+
+class Publication(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    Year = db.Column(db.Integer)
+    Text = db.Column(db.String)
+    DOI = db.Column(db.String, index = True)
+
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
