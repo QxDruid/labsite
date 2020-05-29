@@ -9,7 +9,7 @@
 
     <div class="row" style="margin: 10px auto;">
         <div class="col-3" style="margin: 0 auto;">
-            <div class="list-group" >
+            <div class="list-group" style="text-align: center;">
                 {% for year in years %}
                 <a href="{{url_for('main.public', active_year=year)}}" class="list-group-item list-group-item-action {% if active_year == year %} active {% endif %}">
                     {{year}}
@@ -18,16 +18,17 @@
 
             </div>
         </div>
-        <div class="col-8" style="margin: 0 auto;">
+        <div class="col-9" style="margin: 0 auto;">
           {% if current_user.is_authenticated %}
     
-          <div class="col-xl-6" style="margin: 10px auto; border:1px solid black; border-radius:10px;">
-            <form enctype="multipart/form-data" action="" method='post' novalidate>
+          <div class="col-xl-6" style="margin: 10px auto; ">
+            <div style="border:1px solid black; border-radius:10px; padding: 5px;">
+            <form enctype="multipart/form-data" action="" method='post' novalidate >
                 <div class="form-group">
                   {{ form.csrf_token() }}
                 <div class="form-group">
                   {{ form.year.label }}
-                  {% with messages = get_flashed_messages(category_filter=["error_title"]) %}
+                  {% with messages = get_flashed_messages(category_filter=["error_year"]) %}
                     {% for  message in messages %}
                       <div class="alert alert-danger" role="alert">
                         {{ message }}
@@ -38,7 +39,7 @@
                 </div>
                 <div class="form-group">
                     {{ form.text.label }}
-                    {% with messages = get_flashed_messages(category_filter=["error_title"]) %}
+                    {% with messages = get_flashed_messages(category_filter=["error_ref"]) %}
                       {% for  message in messages %}
                         <div class="alert alert-danger" role="alert">
                           {{ message }}
@@ -49,7 +50,7 @@
                   </div>
                   <div class="form-group">
                     {{ form.doi.label }}
-                    {% with messages = get_flashed_messages(category_filter=["error_title"]) %}
+                    {% with messages = get_flashed_messages(category_filter=["error_doi"]) %}
                       {% for  message in messages %}
                         <div class="alert alert-danger" role="alert">
                           {{ message }}
@@ -66,20 +67,22 @@
                 </div>
               </form>
             </div>
-      </div>
-      {% endif %}
+            </div>
+        </div>
+      
+            {% endif %}
 
             {% for public in publics %}
               <div style="text-align: justify; border-bottom:1px dashed black; padding: 10px 0;">
                 {% if current_user.is_authenticated %}
                 <div>
-                  <form action="" method="POST" style="display: inline-block;">
+                  <form action="" method="POST"  style="display: inline-block;">
                   {{ formDelete.csrf_token() }}
                   {{ formDelete.Id(value = public.id) }}
                   {{ formDelete.submitDelete(class="btn btn-dark") }}
                   </form>
                   <button type="button" class="btn btn-dark">
-                    <a href="{{ url_for('main.index') }}" style="text-decoration: none; color:white;">Редактировать</a>
+                    <a href="{{ url_for('main.editpublication', id=public.id) }}" style="text-decoration: none; color:white;">Редактировать</a>
                   </button>
                 </div>
                 {% endif %}
@@ -88,7 +91,7 @@
                   </div>
               </div>
             {% endfor %}
-        
+          </div>
     </div>
 </div>
 {% endblock %} 

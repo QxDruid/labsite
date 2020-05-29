@@ -67,6 +67,7 @@ class editResearchForm(FlaskForm):
     submit = SubmitField('Загрузить')
 
 class PublicationAddForm(FlaskForm):
+    id = StringField()
     year = StringField('Год', validators=[DataRequired()])
     text = TextAreaField('Литературная ссылка', validators=[DataRequired()])
     doi = StringField('DOI', validators=[DataRequired()])

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}
+edit
+{% endblock %}
+
+{% block content %}
+<div class="conteiner" >
+  <div class="col-xl-6" style="margin: 10px auto; min-height: 100vh;">
+    <div style="border:1px solid black; border-radius:10px; padding: 5px;">
+    <form enctype="multipart/form-data" action="" method='post' novalidate >
+        <div class="form-group">
+          {{ form.csrf_token() }}
+        <div class="form-group">
+          {{ form.year.label }}
+          {% with messages = get_flashed_messages(category_filter=["error_year"]) %}
+            {% for  message in messages %}
+              <div class="alert alert-danger" role="alert">
+                {{ message }}
+              </div>  
+            {% endfor %}
+          {% endwith %}
+          {{ form.year(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.text.label }}
+            {% with messages = get_flashed_messages(category_filter=["error_ref"]) %}
+              {% for  message in messages %}
+                <div class="alert alert-danger" role="alert">
+                  {{ message }}
+                </div>  
+              {% endfor %}
+            {% endwith %}
+            {{ form.text(class="form-control") }}
+          </div>
+          <div class="form-group">
+            {{ form.doi.label }}
+            {% with messages = get_flashed_messages(category_filter=["error_doi"]) %}
+              {% for  message in messages %}
+                <div class="alert alert-danger" role="alert">
+                  {{ message }}
+                </div>  
+              {% endfor %}
+            {% endwith %}
+            {{ form.doi(class="form-control") }}
+          </div>
+
+        <div class="form-group">
+        <div style="text-align: center;"> 
+          {{ form.submit(class="btn btn-dark") }}
+        </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

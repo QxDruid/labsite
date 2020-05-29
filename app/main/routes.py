@@ -357,10 +357,9 @@ def public(active_year):
     form = PublicationAddForm()
     formDelete = DeleteForm()
     list_ = []
-    print("qqqqqq")
 
     if form.validate_on_submit():
-        print("asdasdasdasd")
+
         new_public = Publication()
         new_public.Text = form.text.data
         new_public.Year = form.year.data
@@ -369,12 +368,23 @@ def public(active_year):
         db.session.commit()
         return redirect(url_for('main.public', active_year=active_year))
 
-    if formDelete.validate_on_submit():
+    elif formDelete.validate_on_submit():
         public_delete = Publication.query.get(formDelete.Id.data)
         db.session.delete(public_delete)
         db.session.commit()
         return redirect(url_for('main.public', active_year=active_year))
 
+    elif request.method == "POST":
+        if not form.year.data:
+            flash("Введите Год", "error_year")
+        if not form.text.data:
+            flash("Введите Ссылку", "error_ref")
+        if not form.doi.data:
+            flash("Введите DOI", "error_doi")
+        return redirect(url_for('main.public', active_year=active_year))
+
+    
+        
 
     for i in range(2030, 2005, -1):
         if Publication.query.filter_by(Year = i).first():
@@ -387,3 +397,49 @@ def public(active_year):
 
 
     return render_template("publications.html", active_year=active_year, years = list_, publics = publics, form=form, formDelete=formDelete)
+
+
+@bp.route("/editpublication/<id>", methods=["POST", "GET"])
+def editpublication(id):
+    form = PublicationAddForm()
+    public = Publication.query.get(id)
+    if form.validate_on_submit():
+        public.Year = form.year.data
+        public.DOI = form.doi.data
+        public.Text = form.text.data
+        db.session.add(public)
+        db.session.commit()
+        return redirect(url_for('main.public', active_year=form.year.data))
+
+    elif request.method == "POST":
+        if not form.year.data:
+            flash("Введите Год", "error_year")
+        if not form.text.data:
+            flash("Введите Ссылку", "error_ref")
+        if not form.doi.data:
+            flash("Введите DOI", "error_doi")
+        return redirect(url_for('main.editpublication',id = id))
+    
+
+
+    
+    form.year.data = public.Year
+    form.text.data = public.Text
+    form.doi.data = public.DOI
+    return render_template("editpublication.html", form=form)
+
+@bp.route("/galery/")
+def galery():
+    return render_template("galery.html")
+
+@bp.route("/achievs/")
+def achievs():
+    return render_template("achievs.html")
+
+@bp.route("/projects/")
+def projects():
+    return render_template("projects.html")
+
+@bp.route("/patents/")
+def patents():
+    return render_template("patents.html")

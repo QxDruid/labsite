@@ -49,17 +49,17 @@
                             Достижения
                           </a>
                           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ url_for('main.public', active_year = 0) }}">Публикации</a>
-                            <a class="dropdown-item" href="#">Проекты</a>
-                            <a class="dropdown-item" href="#">Патенты</a>
-                            <a class="dropdown-item" href="#">Награды</a>
+                            <a class="dropdown-item" href="{{url_for('main.public', active_year = 0) }}">Публикации</a>
+                            <a class="dropdown-item" href="{{url_for('main.projects')}}">Проекты</a>
+                            <a class="dropdown-item" href="{{url_for('main.patents')}}">Патенты</a>
+                            <a class="dropdown-item" href="{{url_for('main.achievs')}}">Награды</a>
                           </div>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{url_for('main.contacts')}}">Контакты</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Галерея</a>
+                            <a class="nav-link" href="{{url_for('main.galery')}}">Галерея</a>
                         </li>
                     </ul>
                     {% if current_user.is_authenticated %}
