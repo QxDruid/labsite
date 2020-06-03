@@ -72,3 +72,8 @@ class PublicationAddForm(FlaskForm):
     text = TextAreaField('Литературная ссылка', validators=[DataRequired()])
     doi = StringField('DOI', validators=[DataRequired()])
     submit = SubmitField('Опубликовать')
+
+class PatentAddForm(FlaskForm):
+    id = StringField()
+    text = TextAreaField('Описание', validators=[DataRequired()])
+    submit = SubmitField('Опубликовать')

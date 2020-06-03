@@ -1,7 +1,7 @@
 from app.main import bp
 from flask import render_template, url_for, request, redirect, flash
 from app import db
-from app.db_models import Slider_image, News, Person, Research, User, Publication
+from app.db_models import *
 from app.forms import *
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.utils import secure_filename
@@ -428,18 +428,112 @@ def editpublication(id):
     form.doi.data = public.DOI
     return render_template("editpublication.html", form=form)
 
+@bp.route("/patents/", methods=["POST", "GET"])
+def patents():
+    form = PatentAddForm()
+    formDelete = DeleteForm()
+
+    if form.validate_on_submit():
+        new_patent = Patent()
+        new_patent.Text = form.text.data
+        db.session.add(new_patent)
+        db.session.commit()
+        return redirect(url_for('main.patents'))
+
+    elif formDelete.validate_on_submit():
+        patent_delete = Patent.query.get(formDelete.Id.data)
+        db.session.delete(patent_delete)
+        db.session.commit()
+        return redirect(url_for('main.patents'))
+
+    elif request.method == "POST":
+        if not form.text.data:
+            flash("Введите описание", "error_ref")
+
+        return redirect(url_for('main.patents'))
+
+    
+
+
+    patents = Patent.query.all()
+
+
+    return render_template("patents.html", patents = patents, form=form, formDelete=formDelete)
+
+
+@bp.route("/editpatent/<id>", methods=["POST", "GET"])
+def editpatent(id):
+    form = PatentAddForm()
+    patent = Patent.query.get(id)
+    if form.validate_on_submit():
+        patent.Text = form.text.data
+        db.session.add(patent)
+        db.session.commit()
+        return redirect(url_for('main.patents'))
+
+    elif request.method == "POST":
+        if not form.text.data:
+            flash("Введите Ссылку", "error_ref")
+        return redirect(url_for('main.editpatent',id = id))
+    
+    form.text.data = patent.Text
+
+    return render_template("editpatent.html", form=form)
+
+
+@bp.route("/projects/", methods=["POST", "GET"])
+def projects():
+    form = PatentAddForm()
+    formDelete = DeleteForm()
+
+    if form.validate_on_submit():
+        new_project = Project()
+        new_project.Text = form.text.data
+        db.session.add(new_project)
+        db.session.commit()
+        return redirect(url_for('main.projects'))
+
+    elif formDelete.validate_on_submit():
+        project_delete = Project.query.get(formDelete.Id.data)
+        db.session.delete(project_delete)
+        db.session.commit()
+        return redirect(url_for('main.projects'))
+
+    elif request.method == "POST":
+        if not form.text.data:
+            flash("Введите описание", "error_ref")
+
+        return redirect(url_for('main.projects'))
+
+    
+
+
+    projects = Project.query.all()
+
+
+    return render_template("projects.html", patents = projects, form=form, formDelete=formDelete)
+
+
+@bp.route("/editproject/<id>", methods=["POST", "GET"])
+def editproject(id):
+    form = PatentAddForm()
+    project = Project.query.get(id)
+    if form.validate_on_submit():
+        project.Text = form.text.data
+        db.session.add(project)
+        db.session.commit()
+        return redirect(url_for('main.projects'))
+
+    elif request.method == "POST":
+        if not form.text.data:
+            flash("Введите Ссылку", "error_ref")
+        return redirect(url_for('main.editproject',id = id))
+    
+    form.text.data = project.Text
+
+    return render_template("editpatent.html", form=form)
+
+
 @bp.route("/galery/")
 def galery():
-    return render_template("galery.html")
-
-@bp.route("/achievs/")
-def achievs():
-    return render_template("achievs.html")
-
-@bp.route("/projects/")
-def projects():
-    return render_template("projects.html")
-
-@bp.route("/patents/")
-def patents():
-    return render_template("patents.html")
+    return render_template("in_progres.html")

@@ -127,6 +127,15 @@ class Publication(UserMixin, db.Model):
     Text = db.Column(db.String)
     DOI = db.Column(db.String, index = True)
 
+class Patent(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    Text = db.Column(db.String)
+
+class Project(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    Text = db.Column(db.String)
+
+
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
