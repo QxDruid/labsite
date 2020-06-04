@@ -7,6 +7,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.utils import secure_filename
 import os
 import config
+import json
 
 # Главная страница
 @bp.route("/", methods = ["POST", "GET"])
@@ -80,7 +81,7 @@ def research():
         formAddResearch = formAddResearch
     )
 # форма логина для администрации
-@bp.route("/login/", methods = ["POST", "GET"])
+@bp.route("/66login062/", methods = ["POST", "GET"])
 def login():
     
     if current_user.is_authenticated:
@@ -157,9 +158,12 @@ def addnews():
 
     formAddNews = AddNewsForm()
     if formAddNews.validate_on_submit():
-        f = formAddNews.image.data
-        filename = secure_filename(f.filename)
-        f.save(os.path.join(config.basedir, 'app/static/img/NewsImages/{}'.format(filename)))
+        if formAddNews.image.data:
+            f = formAddNews.image.data
+            filename = secure_filename(f.filename)
+            f.save(os.path.join(config.basedir, 'app/static/img/NewsImages/{}'.format(filename)))
+        else:
+            filename = None
 
         News.set_news('img/NewsImages/{}'.format(filename), 
             formAddNews.title.data, 
@@ -534,6 +538,29 @@ def editproject(id):
     return render_template("editpatent.html", form=form)
 
 
+@bp.route("/achieves/")
+def achieves():
+    return render_template("in_progres.html")
+
 @bp.route("/galery/")
 def galery():
     return render_template("in_progres.html")
+
+@bp.route("/comments/", methods=["POST", "GET"])
+def comments():
+    data = {}
+    form = CommentForm()
+    with open(os.path.join(config.basedir, 'comments.json'), "r") as r_file:
+            data = json.load(r_file)
+
+    if form.validate_on_submit():
+            counter = int(data['counter']) + 1
+            data[str(counter)] = form.name.data + ": " + form.comment.data
+            with open(os.path.join(config.basedir, 'comments.json'), "w") as w_file:
+                json.dump(data, w_file)
+            return redirect(url_for("main.comments"))
+
+
+    return render_template("comments.html", form=form, comments=data)
+    
+        

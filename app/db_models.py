@@ -50,7 +50,8 @@ class News(db.Model):
         news.Description = description
         news.Title = title
         news.Fulltext = fulltext
-        news.Image = image
+        if image:
+            news.Image = image
         db.session.add(news)
         db.session.commit()
     

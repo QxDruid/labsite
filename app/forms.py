@@ -77,3 +77,8 @@ class PatentAddForm(FlaskForm):
     id = StringField()
     text = TextAreaField('Описание', validators=[DataRequired()])
     submit = SubmitField('Опубликовать')
+
+class CommentForm(FlaskForm):
+    name = StringField('Имя', validators=[DataRequired()])
+    comment = TextAreaField('Описание', validators=[DataRequired()])
+    submit = SubmitField('Опубликовать')

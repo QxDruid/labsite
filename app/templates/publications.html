@@ -11,7 +11,7 @@
         <div class="col-3" style="margin: 0 auto;">
             <div class="list-group" style="text-align: center;">
                 {% for year in years %}
-                <a href="{{url_for('main.public', active_year=year)}}" class="list-group-item list-group-item-action {% if active_year == year %} active {% endif %}">
+                <a href="{{url_for('main.public', active_year=year)}}" class="list-group-item list-group-item-action {% if active_year == year %} active {% endif %}" style="text-align: center;">
                     {{year}}
                 </a>
                 {% endfor %}
