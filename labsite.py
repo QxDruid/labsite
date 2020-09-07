@@ -8,4 +8,4 @@ def make_shell_context():
     return {'db': db, 'User': User, 'Slider_image':Slider_image, 'News':News, 'Person':Person, 'Research':Research, 'app': app}
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0')
