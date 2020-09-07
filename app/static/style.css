@@ -20,6 +20,7 @@ html, body {
 
 #content{
     margin-top: 10px;
+    margin-bottom: 100px;
     padding: 0 10px;
 }
 
@@ -39,7 +40,7 @@ html, body {
 .post{
     margin: 10px auto;
     padding-bottom: 10px;
-    text-align: justify;
+    text-align: left;
 }
 
 .staff_card{
