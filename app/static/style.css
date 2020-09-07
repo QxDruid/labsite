@@ -21,13 +21,13 @@ html, body {
 #content{
     margin-top: 10px;
     margin-bottom: 100px;
+    max-width: 100%;
     padding: 0 10px;
 }
 
 #carousel{
     padding: 0;
     margin: 0 auto;
-    max-width: 100%;
     border-bottom: 3px solid black;
 }
 
