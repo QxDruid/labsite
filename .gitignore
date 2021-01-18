@@ -5,6 +5,7 @@ __pycache__/*
 /app/main/__pycache__/*
 
 venv/*
+env/*
 .env
 *.jpg
 *.png
