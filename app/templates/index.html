@@ -12,8 +12,8 @@
 		
 	    <div class="row">
 
-	    <div class="col-lg-3 col-md-1 col-sm-0 col-0"></div>
-	    <div class="col-lg-6 col-md-10 col-sm-12 col-12">	
+	    <div class="col-lg-4 col-md-4 col-sm-0 col-0"></div>
+	    <div class="col-lg-4 col-md-8 col-sm-12 col-12" >	
 
             <! -- слайдер с фото -->
             {% if slider_photos %}
@@ -24,10 +24,10 @@
                         {% if  photo.Index  == 0 %} class="active" {% endif %} ></li>
                     {% endfor %}
                 </ol>
-                <div class="carousel-inner">
+                <div class="carousel-inner" >
                     {% for photo in slider_photos %}
-                        <div class="carousel-item {% if photo.Index == 0 %} active {% endif %}" >
-                            <img src="{{url_for('static',filename=photo.Image)}}" class="d-block img-fluid mx-auto" alt="..." style="max-height: 500px;">
+                        <div class="carousel-item {% if photo.Index == 0 %} active {% endif %}"  >
+                            <img src="{{url_for('static',filename=photo.Image)}}" class="d-block img-fluid mx-auto" alt="..." style="max-height: 300px; width: auto">
                             {% if current_user.is_authenticated %}
                             <div class="carousel-caption" >
                                 <form action="" method="post" novalidate>
