@@ -94,13 +94,26 @@
     <! -- новостная лента (на маленьком экране скрыта) -->
     <div id="sidebar" class="col-lg-4 col-xl-3 d-none d-lg-block ">
       <div class="container">
-        <div class="text-center" id="news_header">
-          <span class="h2">Новости</span>
-        </div>          
-                
-        {% for post in posts %}
-          {% include '_post.html'%}
-        {% endfor %}
+            <div class="text-center" id="news_header">
+                <span class="h2">Новости</span>
+            </div>  
+            {% for post in posts.items %}
+                <div class="conteiner" style="margin: 0 auto;">
+                {% include "_post.html" %}
+            </div>
+            {% endfor %}
+            <div>
+                <div style="float:left;">
+                    {% if posts.has_prev %}
+                        <a href="{{url_for('main.staff',page=posts.prev_num)}}" style="text-decoration:none;">&lt;- Назад</a>
+                    {% endif %}
+                </div>
+                {% if posts.has_next %}
+                    <div style="float:right;">
+                        <a href="{{url_for('main.staff',page=posts.next_num)}}" style="text-decoration:none;">Далее -&gt;</a>
+                    </div>
+                {% endif %}
+            </div>
 
       </div>
     </div>

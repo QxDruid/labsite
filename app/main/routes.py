@@ -35,9 +35,18 @@ def index():
 
         return redirect(url_for('main.index'))
 
-    # рендер страницы если запрос "GET"
+    # ----------- рендер страницы если запрос "GET" -----------
+
+    # создаем пагинатор для разбиения новостей на страницы
+    page = request.args.get('page')
+    if not page:
+        page = 1
+    else:
+        page=int(page)
+
+    posts = News.query.order_by(News.id.desc()).paginate(page, 5, False)
+
     photos = Slider_image.query.all()
-    posts = News.query.order_by(News.id.desc()).all()
     return render_template("index.html", 
         slider_photos=photos,
         posts=posts,
@@ -54,7 +63,14 @@ def staff():
     formDeleteNews = DeleteNewsForm()
     formPersonAdd = PersonAddForm()
     formDelete = DeleteForm()
-    posts = News.query.order_by(News.id.desc()).all()
+
+    #создаем пагинатор для разбиения новостей на страницы
+    page = request.args.get('page')
+    if not page:
+        page = 1
+    else:
+        page=int(page)
+    posts = News.query.order_by(News.id.desc()).paginate(page, 5, False)
     staff = Person.query.all()
     return render_template("staff.html",
         posts=posts,
