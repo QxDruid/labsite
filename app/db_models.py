@@ -137,6 +137,29 @@ class Project(UserMixin, db.Model):
     Text = db.Column(db.String)
 
 
+class Gallery_image(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    Image = db.Column(db.String(32))
+    Description = db.Column(db.String)
+    
+    @staticmethod
+    def delete_image(id):
+        base = Gallery_image.query.filter_by(id = id).first()
+        if base:
+            db.session.delete(base)
+            db.session.commit()
+            return True
+        return False
+
+    @staticmethod
+    def set_image(image, description):
+        base = Gallery_image()
+        base.Image = image
+        base.Description = description
+        db.session.add(base)
+        db.session.commit()
+
+
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))

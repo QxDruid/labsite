@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Галерея
+{% endblock title%}
+
+
+{% block content%}
+
+<div class="container-fluid gallery_container">
+
+    {% if current_user.is_authenticated%}
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 text-center" style="border: 1px solid black; border-radius: 5px; margin: 0 auto;">
+        <form action="{{url_for('gallery.gallery')}}" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                {{formAddImage.csrf_token()}}
+                {{formAddImage.image.label}}
+                <br/>
+                {{formAddImage.image}}
+            </div>
+            <div class="form-group">
+                {{formAddImage.description(class="input-lg")}}
+                <br/>
+                {{formAddImage.submitUpload}}
+            </div>
+        </form>
+    </div>
+    {%endif%}
+
+
+    <div class="row">
+        {% for image in image_set %}
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-10">
+                <div class="gallery_image" data-title="{{image.Description}}">
+                    <img src="{{url_for('static', filename=image.Image)}}" alt="">
+
+                    {% if current_user.is_authenticated %}
+                        <form action="{{ url_for('gallery.gallery') }}" method="POST" novalidate  style="display:inline-block">
+                        <div class="form-group gallery_image_delete_button">
+                            {{ formDelete.csrf_token() }}
+                            {{ formDelete.Id(value = image.id)}}
+                            {{ formDelete.submitDelete(class="btn btn-dark") }}
+                        </div>
+                        </form>
+                    {% endif %}
+                </div>
+
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div style="min-height:100vh"></div>
+
+{% endblock content%}

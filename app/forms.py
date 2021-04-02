@@ -82,3 +82,8 @@ class CommentForm(FlaskForm):
     name = StringField('Имя', validators=[DataRequired()])
     comment = TextAreaField('Описание', validators=[DataRequired()])
     submit = SubmitField('Опубликовать')
+
+class SetGalleryImageForm(FlaskForm):
+    image = FileField('Изображение', validators=[FileRequired(), FileAllowed(["jpg", "png"], 'Images only!')])
+    description = TextAreaField('Описание')
+    submitUpload = SubmitField('Загрузить')

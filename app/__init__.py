@@ -18,6 +18,10 @@ def create_app(config_class=Config):
 
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)    
+
+    from app.gallery import bp as gallery_bp
+    app.register_blueprint(gallery_bp)
+    
     return app
 
 from app import db_models

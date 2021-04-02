@@ -321,6 +321,3 @@ def public(active_year):
 
     return render_template("publications.html", active_year=active_year, years = list_, publics = publics, form=form, formDelete=formDelete)
 
-@bp.route("/galery/")
-def galery():
-    return render_template("in_progres.html")
