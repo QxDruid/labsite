@@ -28,7 +28,7 @@ def send_verification_email(app, destination, key):
     with app.app_context():
         msg = Message(subject=f'Поддверждение отправки отзыва ИЛТССД', sender=app.config['MAIL_USERNAME'], recipients=[destination])
         msg.body = f'Для подтверждения отправки Отзыва в ИЛТССД перейдите по ссылке http://илтссд.рф/confirm?uuid={key}'
-        msg.html = f'<h3>Для подтверждения отправки Отзыва в ИЛТССД перейдите по ссылке</h3><p><a href="http://127.0.0.1:5000/confirm?uuid={key}">Подтвердить отправку</a></p>'
+        msg.html = f'<h3>Для подтверждения отправки Отзыва в ИЛТССД перейдите по ссылке</h3><p><a href="http://илтссд.рф/confirm?uuid={key}">Подтвердить отправку</a></p>'
         try:
             mail.send(msg)
         except:
