@@ -33,19 +33,22 @@
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="navbar-nav mr-auto">
                         
-                        <li class="nav-item active">
+                        <li class="nav-item {% block active_index %}{% endblock %}">
                             <a class="nav-link" href="{{url_for('main.index')}}">Главная</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{url_for('main.staff')}}">Сотрудники</a>
+                            <a class="nav-link {% block active_staff %}{% endblock %}" href="{{url_for('main.staff')}}">Сотрудники</a>
                         </li>
 
         
                         <li class="nav-item">
-                            <a class="nav-link" href="{{url_for('main.contacts')}}">Контакты</a>
+                            <a class="nav-link {% block active_contacts %}{% endblock %}" href="{{url_for('main.contacts')}}">Контакты</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{url_for('gallery.gallery')}}">Галерея</a>
+                            <a class="nav-link {% block active_gallery %}{% endblock %}" href="{{url_for('gallery.gallery')}}">Галерея</a>
+                        </li>
+                        <li class="nav-item {% block active_response %}{% endblock %}">
+                            <a class="nav-link" href="{{url_for('mailservice.response')}}">Обратная связь</a>
                         </li>
                     </ul>
                     {% if current_user.is_authenticated %}

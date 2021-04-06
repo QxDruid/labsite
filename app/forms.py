@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, HiddenField, IntegerField, TextAreaField
-from wtforms.validators import DataRequired, InputRequired
+from wtforms.validators import DataRequired, InputRequired, Email
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 
 
@@ -87,3 +87,12 @@ class SetGalleryImageForm(FlaskForm):
     image = FileField('Изображение', validators=[FileRequired(), FileAllowed(["jpg", "png"], 'Images only!')])
     description = TextAreaField('Описание')
     submitUpload = SubmitField('Загрузить')
+
+class ResponseForm(FlaskForm):
+    sender_company = StringField('Организация', validators=[InputRequired('Укажите Организацию')])
+    sender_name = StringField('ФИО', validators=[InputRequired('Укажите свои данные')])
+    sender_function = StringField('Должность')
+    sender_email = StringField('Email', validators=[InputRequired("Введите Email"), Email("Некорекктный Email адрес")])
+    sender_phone = StringField('Телефон')
+    response = TextAreaField('Отзыв', validators=[InputRequired('Отзыв не может быть пустым')])
+    submitUpload = SubmitField('Отправить')

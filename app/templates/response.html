@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %} Отзыв {% endblock %}
+
+{% block active_response %} active {% endblock %}
+
+{% block content%}
+<div class="conteiner">
+    <div class="row justify-content-center" style="min-height: 100vh; margin:0 auto;">
+        <div class="col-10 col-sm-10 col-md-6 col-lg-4 col-xl-4" style="margin: 0 auto; padding-left:5%">
+          <form action="{{ url_for('mailservice.response') }}" method="POST" enctype="multipart/form-data" novalidate>
+            {{ formResponse.csrf_token() }}
+            <div class="form-group" id="addPersonForm">
+                <h3 style="text-align: center;">Оставить Отзыв</h3>
+
+                {{ formResponse.sender_company.label }}
+                {% for  message in formResponse.sender_company.errors %}
+                    <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                    </div>  
+                {% endfor %}
+
+                {{ formResponse.sender_company(class="form-control") }}
+
+                {{ formResponse.sender_name.label }}
+                {% for  message in formResponse.sender_name.errors %}
+                    <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                    </div>  
+                {% endfor %}
+                
+                {{ formResponse.sender_name(class="form-control") }}
+
+                {{ formResponse.sender_function.label }}
+
+                {{ formResponse.sender_function(class="form-control") }}
+  
+                {{ formResponse.sender_email.label }}
+                {% for  message in formResponse.sender_email.errors %}
+                    <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                    </div>  
+                {% endfor %}
+
+                {{ formResponse.sender_email(class="form-control") }}
+  
+                {{ formResponse.sender_phone.label }}
+ 
+                {{ formResponse.sender_phone(class="form-control") }}
+  
+                {{ formResponse.response.label }}
+                {% for  message in formResponse.response.errors %}
+                    <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                    </div>  
+                {% endfor %}
+                {{ formResponse.response(class="form-control") }}
+
+                <br />
+                <div style="text-align:center;">
+                    {{ formResponse.submitUpload(class="btn btn-dark") }}
+                </div>
+            </div>
+  
+          </form>
+        </div>
+    </div>
+</div>        
+{% endblock content%}

@@ -1,11 +1,36 @@
 {% extends "base.html" %}
 
-{% block title %}
-  Главная
-{% endblock %}
+{% block title %} Главная {% endblock %}
+
+{% block active_index %} active {% endblock %}
 
 {% block content %}
 <div class="container-fluid">
+    
+    {% with messages = get_flashed_messages(category_filter=["confirmation"]) %}
+    {% for message in messages %}
+         <div class="alert alert-success index-alert" role="alert">
+                        {{ message }}
+        </div>  
+    {% endfor %}
+    {% endwith %}
+    
+    {% with messages = get_flashed_messages(category_filter=["confirmation_success"]) %}
+    {% for message in messages %}
+         <div class="alert alert-success index-alert" role="alert">
+                        {{ message }}
+        </div>  
+    {% endfor %}
+    {% endwith %}
+    
+    {% with messages = get_flashed_messages(category_filter=["confirmation_fail"]) %}
+    {% for message in messages %}
+         <div class="alert alert-danger index-alert" role="alert">
+                        {{ message }}
+        </div>  
+    {% endfor %}
+    {% endwith %}
+    
     <div class="row">
         <div id="main" class="col-12 col-sm-12 col-md-7 col-lg-8">
             <h2 style="text-align: center;">Лаборатория технических систем и средств досмотра</h2>
@@ -137,7 +162,6 @@
                     </div>
                 {% endif %}
             </div>
-           
 
             </div>
         </div>
