@@ -22,6 +22,6 @@ class Config(object):
     MAIL_PORT = int(os.environ.get('MAIL_PORT') or 465)
     MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') is not None or False
     MAIL_USE_SSL = os.environ.get('MAIL_USE_SSL') is not None or True
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME') or 'admin@xn--d1ahjyae.xn--p1ai'
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or '66062Pass'
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     MAIL_DESTINATION = '579937@bk.ru'
