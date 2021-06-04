@@ -6,5 +6,6 @@ COPY . .
 
 RUN pip3 install -r requirments.txt && pip3 install gunicorn
 EXPOSE 8000
+EXPOSE 465
 
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "labsite:app"]
