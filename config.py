@@ -24,4 +24,4 @@ class Config(object):
     MAIL_USE_SSL = os.environ.get('MAIL_USE_SSL') is not None or True
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-    MAIL_DESTINATION = '579937@bk.ru'
+    MAIL_DESTINATION = os.environ.get('MAIL_DESTINATION') or '579937@bk.ru'
