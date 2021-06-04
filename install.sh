@@ -3,6 +3,10 @@
 # очищаем старый образ и сеть
 docker rmi flask_app
 docker network rm flask_app_net
+docker stop nginx
+docker stop flaskapp
+docker rm nginx
+docker rm flaskapp
 
 #билд образа flask
 docker build -t flask_app .
