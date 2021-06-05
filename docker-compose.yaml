@@ -2,7 +2,7 @@ version: "3"
 
 services: 
     labsite:
-        build: webserver/
+        build: .
         volumes: 
             - ./database/:/database/
             - ./static/:/app/static/
