@@ -4,10 +4,10 @@ services:
     labsite:
         build: .
         volumes: 
-            - ./database/:/database/
-            - ./static/:/app/static/
+            - ~/webserver/database/:/database/
+            - ~/webserver/static/:/app/static/
         env_file: 
-            - .env
+            - ~/webserver/.env
         ports: 
             - 8000:8000
             - 465:465
@@ -16,7 +16,7 @@ services:
     nginx:
         image: nginx:latest
         volumes: 
-            - ./nginx/:/etc/nginx/conf.d:ro
+            - ~/webserver/nginx/:/etc/nginx/conf.d:ro
         ports: 
             - 80:80
         depends_on: 
