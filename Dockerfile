@@ -2,7 +2,11 @@ FROM python:3.8.10-alpine3.13
 
 WORKDIR /
 
-COPY . .
+COPY app/ /app/
+COPY migrations/ /migrations/
+COPY config.py .
+COPY labsite.py .
+COPY requirments.txt .
 
 RUN pip3 install -r requirments.txt && pip3 install gunicorn
 EXPOSE 8000
