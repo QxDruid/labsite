@@ -8,6 +8,7 @@ services:
             - ~/webserver/static/:/app/static/
         env_file: 
             - ~/webserver/.env
+        restart: always
         ports: 
             - 8000:8000
             - 465:465
@@ -17,6 +18,7 @@ services:
         image: nginx:latest
         volumes: 
             - ~/webserver/nginx/:/etc/nginx/conf.d:ro
+        restart: always
         ports: 
             - 80:80
         depends_on: 
