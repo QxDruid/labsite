@@ -17,7 +17,7 @@ pipeline {
 
             steps {
                 sh 'docker stop $(docker ps --filter ancestor=labsite_dev | tail -1 | awk \'{print $1}\') || true'
-                sh 'docker run -d --rm -p8000:8000 -v /home/web_host/webserver_dev/static/:/app/static/ -v /home/web_host/webserver_dev/database/:/database/  labsite_dev'
+                sh 'docker run -d --rm -p8090:8000 -v /home/web_host/webserver_dev/static/:/app/static/ -v /home/web_host/webserver_dev/database/:/database/  labsite_dev'
             }
         }
 
