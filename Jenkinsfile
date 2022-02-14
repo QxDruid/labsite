@@ -17,7 +17,7 @@ pipeline {
 
             steps {
                 sh 'docker stop $(docker ps | grep labsite_dev | awk \'{print $1}\') || true'
-                sh 'docker run -d -p5000:8000 --rm -v /home/web_host/webserver_dev/static/:/app/static/ --env-file /home/web_host/webserver/envfile.env labsite_master'
+                sh 'docker run -d -p5000:8000 --rm -v /home/web_host/webserver_dev/static/:/app/static/ --env-file "/home/web_host/webserver/envfile.env" labsite_master'
             }
         }
 
