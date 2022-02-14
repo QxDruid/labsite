@@ -36,8 +36,8 @@ class Slider_image(db.Model):
 
 class News(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    Image = db.Column(db.String(32))
-    Title = db.Column(db.String(32), index=True, unique=True)
+    Image = db.Column(db.String(128))
+    Title = db.Column(db.String(128), index=True, unique=True)
     Description = db.Column(db.String(256))
     Fulltext = db.Column(db.String)
 
