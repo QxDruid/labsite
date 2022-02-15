@@ -9,6 +9,7 @@ import json
 
 
 # Главная страница админа
+@login_required
 @bp.route("/admin", methods = ["POST", "GET"])
 @bp.route("/admin/index/", methods = ["POST", "GET"])
 def index():
@@ -23,27 +24,27 @@ def index():
 
 
 # выход администратора
-@login_required
 @bp.route("/admin/response/", methods = ["GET"])
+@login_required
 def response():
     all_resp = Response.query.order_by(Response.id.desc())
     return render_template("admin_response.html", all_response=all_resp)
 
 # выход администратора
-@login_required
 @bp.route("/admin/news/", methods = ["GET"])
+@login_required
 def news():
     return render_template("admin_news.html")
 
 # выход администратора
-@login_required
 @bp.route("/admin/staff/", methods = ["GET"])
+@login_required
 def staff():
     return redirect(url_for('main.index'))
 
 # выход администратора
-@login_required
 @bp.route("/admin/contacts/", methods = ["GET"])
+@login_required
 def contacts():
     return redirect(url_for('main.index'))
 
