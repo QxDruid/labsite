@@ -26,7 +26,7 @@ def response():
                                 'sender_phone':formResponse.sender_phone.data, 'response':formResponse.response.data, 'sender_function':formResponse.sender_function.data}
         message_list[key]=data     
 
-        flash(f'Для подтверждения, введите следующий код: {key}', category='confirmation')
+        flash(f'Для подтверждения, скопируйте и отправьте код: {key}', category='confirmation')
         return redirect(url_for('mailservice.confirm', key=key))
 
     return render_template('response.html', formResponse=formResponse)
@@ -54,7 +54,7 @@ def confirm(key):
             flash('Отзыв успешно отправлен', category='confirmation_success')
             return redirect(url_for('main.index'))
 
-        flash(f'Неверный код подтверждения, повторите отправку кода: {key}', category='confirmation_fail')
+        flash(f'Неверный код подтверждения, скопируйте и отправьте код: {key}', category='confirmation_fail')
         return redirect(url_for('mailservice.confirm',key=key))
 
     return render_template('response_confirm.html', formConfirm=formConfirm, key=key)
