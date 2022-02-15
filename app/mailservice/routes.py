@@ -37,7 +37,7 @@ def confirm(key):
     print(message_list)
     formConfirm = ConfirmForm()
     if formConfirm.validate_on_submit():
-        current_uuid = formConfirm.current_uuid.data
+        current_uuid = str(formConfirm.current_uuid.data)
         if current_uuid in uuid_list:
             data = message_list[current_uuid]
             response = Response()
