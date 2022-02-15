@@ -9,9 +9,9 @@ import json
 
 
 # Главная страница админа
-@login_required
 @bp.route("/admin", methods = ["POST", "GET"])
 @bp.route("/admin/index/", methods = ["POST", "GET"])
+@login_required
 def index():
     formReaded= DeleteForm()
     if formReaded.submitDelete.data and formReaded.validate_on_submit():
