@@ -1,6 +1,7 @@
 from app import db, login
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+import datetime
 
 class Slider_image(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -76,6 +77,7 @@ class Response(db.Model):
     phone = db.Column(db.String(256))
     text = db.Column(db.String)
     readed = db.Column(db.Boolean)
+    datetime = db.Column(db.TIMESTAMP,  default=datetime.datetime.now())
 
     def __repr__(self):
         return '<Id: {}, organization: {}>'.format(self.id, self.organization)

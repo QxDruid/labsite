@@ -1,12 +1,11 @@
 {% extends "admin_base.html" %}
 
-{% block title %} Админ Главная{% endblock %}
-
+{% block title %} Админ Отзывы {% endblock %}
     
 {% block admin_content %}
 <div class="col-12 col-sm-12 col-md-12 col-lg-12 text-center">
 <! --  Непрочитанные отзывы -->
-{% for response in unreaded_response %}
+{% for response in all_response %}
   {% include '_response.html'%}
 {% endfor %}
 </div>
