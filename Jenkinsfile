@@ -26,8 +26,6 @@ pipeline {
             }
 
             steps {
-                sh "pwd"
-                sh "ls /home/web_host/webserver_dev/"
                 sh "docker rm -f \$(docker ps | grep labsite_master | cut -f 1 -d ' ') || true"
                 sh "docker run -d -p127.0.0.1:8000:8000 --rm -v /home/web_host/webserver/static/:/app/static/ --env-file /home/web_host/webserver/envfile labsite_master"
             }
