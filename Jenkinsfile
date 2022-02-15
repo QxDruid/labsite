@@ -15,8 +15,8 @@ pipeline {
             }
 
             steps {
-                sh 'docker rm -f $(docker ps | grep labsite_dev | awk \'{print $1}\') || true'
-                sh 'docker run -d -p5000:8000 --rm -v /home/web_host/webserver_dev/static/:/app/static/ --env-file "/home/web_host/webserver_dev/envfile" labsite_dev'
+                sh "docker rm -f $(docker ps | grep labsite_dev | awk \'{print $1}\') || true"
+                sh "docker run -d -p5000:8000 --rm -v /home/web_host/webserver_dev/static/:/app/static/ --env-file "/home/web_host/webserver_dev/envfile" labsite_dev"
             }
         }
 
@@ -26,10 +26,10 @@ pipeline {
             }
 
             steps {
-                sh 'pwd'
-                sh 'ls /home/web_host/webserver/'
-                sh 'docker rm -f $(docker ps | grep labsite_master | awk \'{print $1}\') || true'
-                sh 'docker run -d -p127.0.0.1:8000:8000 --rm -v /home/web_host/webserver/static/:/app/static/ --env-file /home/web_host/webserver/envfile labsite_master'
+                sh "pwd"
+                sh "ls /home/web_host/webserver_dev/"
+                sh "docker rm -f $(docker ps | grep labsite_master | awk \'{print $1}\') || true"
+                sh "docker run -d -p127.0.0.1:8000:8000 --rm -v /home/web_host/webserver/static/:/app/static/ --env-file /home/web_host/webserver/envfile labsite_master"
             }
         }
     }
