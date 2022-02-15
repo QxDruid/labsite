@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% block active_admin %} active {% endblock %}
 
 {% block content%}
     
@@ -14,7 +15,10 @@
     <ul class="nav navbar-nav">
         <div class="dropdown-divider"></div>
         <li class="nav-item">
-            <a class="nav-link disabled" {% block active_admin_news %}{% endblock %} href="{{url_for('admin.news')}}">Новости</a>
+            <a class="nav-link {% block active_admin_index %}{% endblock %}" href="{{url_for('admin.index')}}">Главная</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled {% block active_admin_news %}{% endblock %}" href="{{url_for('admin.news')}}">Новости</a>
         </li>
         <li class="nav-item">
             <a class="nav-link disabled {% block active_admin_gallery %}{% endblock %}" href="{{url_for('admin.staff')}}">Галерея</a>
@@ -22,8 +26,8 @@
         <li class="nav-item">
             <a class="nav-link disabled {% block active_admin_staff %}{% endblock %}" href="{{url_for('admin.contacts')}}">Сотрудники</a>
         </li>
-        <li class="nav-item ">
-            <a class="nav-link disabled {% block active_admin_response %}{% endblock %}" href="{{url_for('admin.response')}}">Обратная связь</a>
+        <li class="nav-item">
+            <a class="nav-link {% block active_admin_response %}{% endblock %}" href="{{url_for('admin.response')}}">Обратная связь</a>
         </li>
     </ul>
 </div>

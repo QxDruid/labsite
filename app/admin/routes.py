@@ -18,10 +18,16 @@ def index():
         response.readed = True
         db.session.add(response)
         db.session.commit()
+    unreaded_resp = Response.query.filter(Response.readed==False).order_by(Response.id.desc())
+    return render_template("admin_index.html", unreaded_response=unreaded_resp,formReaded=formReaded)
+
+
+# выход администратора
+@login_required
+@bp.route("/admin/response/", methods = ["GET"])
+def response():
     all_resp = Response.query.order_by(Response.id.desc())
-    unreaded_resp = [resp for resp in all_resp if resp.readed == False]
-    print(unreaded_resp)
-    return render_template("admin_index.html", unreaded_response=unreaded_resp, all_resp = all_resp, formReaded=formReaded)
+    return render_template("admin_response.html", all_response=all_resp)
 
 # выход администратора
 @login_required
@@ -39,12 +45,6 @@ def staff():
 @login_required
 @bp.route("/admin/contacts/", methods = ["GET"])
 def contacts():
-    return redirect(url_for('main.index'))
-
-# выход администратора
-@login_required
-@bp.route("/admin/response/", methods = ["GET"])
-def response():
     return redirect(url_for('main.index'))
 
 # форма логина для администрации

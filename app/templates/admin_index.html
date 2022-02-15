@@ -1,13 +1,41 @@
 {% extends "admin_base.html" %}
 
 {% block title %} Админ Главная{% endblock %}
+{% block active_admin_index %} active {% endblock %}
 
-    
 {% block admin_content %}
-<div class="col-12 col-sm-12 col-md-12 col-lg-12 text-center">
-<! --  Непрочитанные отзывы -->
 {% for response in unreaded_response %}
-  {% include '_response.html'%}
-{% endfor %}
+<div class="col-12 col-sm-12 col-md-12 col-lg-12 text-center">
+  <div class="card mb-11 staff_card" >
+    <div class="row no-gutters">
+        <div class="col-md-5 col-xl-3">
+            <div class="card-body">
+                <h4 class="card-title">Отзыв от:{{response.organization}}</h4>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">{{ response.fullname }}</li>
+                    <li class="list-group-item">{{ response.position }}</li>
+                    <li class="list-group-item"><b>email:</b> {{ response.email }} </br>
+                                                <b>phone:</b> {{ response.phone }}
+                    </li>
+                    <li class="list-group-item">{{ response.datetime }}</li>
+                  </ul>
+            </div>
+        </div>
+        <div class="col-md-7 col-xl-7 card" style="padding: 30px;">
+                <p class="card-text">
+                    {{ response.text}}
+                </p>
+        </div>
+        <div class="col-md-1 col-xl-1" style="padding: 30px;">
+        <form action="" method="POST" novalidate style="display: inline-block;">
+                {{ formReaded.csrf_token() }}
+                {{ formReaded.Id(value = response.id)}}
+                {{ formReaded.submitDelete(class="btn btn-dark") }}
+        </form>
+        </div>
+        
+    </div>
 </div>
+</div>
+{% endfor %}
 {% endblock %}
