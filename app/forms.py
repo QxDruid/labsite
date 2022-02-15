@@ -92,7 +92,7 @@ class ResponseForm(FlaskForm):
     sender_company = StringField('Организация', validators=[InputRequired('Укажите Организацию')])
     sender_name = StringField('ФИО', validators=[InputRequired('Укажите свои данные')])
     sender_function = StringField('Должность')
-    sender_email = StringField('Email', validators=[InputRequired("Введите Email"), Email("Некорекктный Email адрес")])
+    sender_email = StringField('Email', validators=[InputRequired("Введите Email")])
     sender_phone = StringField('Телефон')
     response = TextAreaField('Отзыв', validators=[InputRequired('Отзыв не может быть пустым')])
     submitUpload = SubmitField('Отправить')
