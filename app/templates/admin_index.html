@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %} Сотрудники {% endblock %}
+
+{% block active_staff %} active {% endblock %}
+
+{% block content%}
+    
+<nav class="navbar navbar-expand-md  navbar-dark bg-dark">
+   
+<div id="navbar" class="collapse navbar-collapse justify-content-center">
+    <ul class="nav navbar-nav d-block d-md-none">
+        <div class="dropdown-divider"></div>
+        <li class="nav-item ">
+            <a class="nav-link disabled navbar-collapse-md" style="color:green; font-weight: bold;">Панель администратора</a>
+        </li>
+    </ul>
+    <ul class="nav navbar-nav">
+        <div class="dropdown-divider"></div>
+        <li class="nav-item">
+            <a class="nav-link" {% block active_admin_news %}{% endblock %} href="{{url_for('admin.news')}}">Новости</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% block active_admin_gallery %}{% endblock %}" href="{{url_for('admin.staff')}}">Галерея</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% block active_admin_staff %}{% endblock %}" href="{{url_for('admin.contacts')}}">Сотрудники</a>
+        </li>
+        <li class="nav-item {% block active_admin_response %}{% endblock %}">
+            <a class="nav-link" href="{{url_for('admin.response')}}">Обратная связь</a>
+        </li>
+    </ul>
+</div>
+
+</nav>
+
+  
+{% endblock %}
