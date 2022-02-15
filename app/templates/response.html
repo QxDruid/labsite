@@ -8,7 +8,7 @@
 <div class="conteiner">
     <div class="row justify-content-center" style="min-height: 100vh; margin:0 auto;">
         <div class="col-10 col-sm-10 col-md-6 col-lg-4 col-xl-4" style="margin: 0 auto; padding-left:5%">
-          <form action="{{ url_for('mailservice.response') }}" method="POST" enctype="multipart/form-data" novalidate>
+          <form action="{{ url_for('mailservice.response') }}" method="POST" enctype="text/plain" novalidate>
             {{ formResponse.csrf_token() }}
             <div class="form-group" id="addPersonForm">
                 <h3 style="text-align: center;">Оставить Отзыв</h3>
