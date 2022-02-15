@@ -67,8 +67,23 @@ class News(db.Model):
         db.session.commit()
 
 
+class Response(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    fullname  = db.Column(db.String(256))
+    organization  = db.Column(db.String(256))
+    email = db.Column(db.String(256))
+    position = db.Column(db.String(256))
+    phone = db.Column(db.String(256))
+    text = db.Column(db.String)
+    readed = db.Column(db.Boolean)
 
+    def __repr__(self):
+        return '<Id: {}, organization: {}>'.format(self.id, self.organization)
 
+    def set_readed():
+        self.readed = True
+        db.session.commit()
+    
 class Person(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     FirstName = db.Column(db.String(32))

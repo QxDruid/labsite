@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %} Подтверждение отзыва {% endblock %}
+
+{% block active_response %} active {% endblock %}
+
+{% block content%}
+<div class="conteiner">
+
+    {% with messages = get_flashed_messages(category_filter=['confirmation']) %}
+    {% for message in messages %}
+         <div class="alert alert-success index-alert" role="alert">
+                        {{ message }}
+        </div>  
+    {% endfor %}
+    {% endwith %}
+
+    {% with messages = get_flashed_messages(category_filter=['confirmation_fail']) %}
+    {% for message in messages %}
+         <div class="alert alert-danger index-alert" role="alert">
+                        {{ message }}
+        </div>  
+    {% endfor %}
+    {% endwith %}
+
+    <div class="row justify-content-center" style="min-height: 100vh; margin:0 auto;">
+        <div class="col-10 col-sm-10 col-md-6 col-lg-4 col-xl-4" style="margin: 0 auto; padding-left:5%">
+          <form action="{{ url_for('mailservice.confirm',key=key) }}" method="POST" enctype="multipart/form-data" novalidate>
+            {{ formConfirm.csrf_token() }}
+            <div class="form-group" id="addPersonForm">
+                <h3 style="text-align: center;"> Подтверждение </h3>
+
+                {{ formConfirm.current_uuid.label }}
+                {% for  message in formConfirm.current_uuid.errors %}
+                    <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                    </div>  
+                {% endfor %}
+                {{ formConfirm.current_uuid(class="form-control") }}
+                <br />
+                <div style="text-align:center;">
+                    {{ formConfirm.submitUpload(class="btn btn-dark") }}
+                </div>
+            </div>
+          </form>
+        </div>
+    </div>
+</div>        
+{% endblock content%}

@@ -96,3 +96,7 @@ class ResponseForm(FlaskForm):
     sender_phone = StringField('Телефон')
     response = TextAreaField('Отзыв', validators=[InputRequired('Отзыв не может быть пустым')])
     submitUpload = SubmitField('Отправить')
+
+class ConfirmForm(FlaskForm):
+    current_uuid = StringField('Код подтверждения')
+    submitUpload = SubmitField('Отправить')
