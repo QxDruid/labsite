@@ -1,6 +1,6 @@
 from app.mailservice import bp
 import uuid
-from flask import render_template, url_for, request, redirect, flash
+from flask import render_template, url_for, request, redirect, flash, make_response
 from app import db
 from flask import current_app
 from flask_login import login_required
@@ -11,8 +11,6 @@ import secrets
 import string
 import json
 
-uuid_list = []
-message_list = {}
 
 # get response and generate password to confirm
 @bp.route("/response/", methods=["POST", "GET"])
@@ -21,25 +19,31 @@ def response():
     
     if formResponse.validate_on_submit():        
         alphabet = '123456789'
-        key = ''.join(secrets.choice(alphabet) for i in range(5))  # for a 5-character password                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
-        uuid_list.append(key)
-        data={'sender_company':formResponse.sender_company.data, 'sender_name':formResponse.sender_name.data,'sender_email':formResponse.sender_email.data,
-                                'sender_phone':formResponse.sender_phone.data, 'response':formResponse.response.data, 'sender_function':formResponse.sender_function.data}
-        message_list[key]=data     
+        key = ''.join(secrets.choice(alphabet) for i in range(5))  # for a 5-character password
+        data=json.dumps({'sender_company':formResponse.sender_company.data, 
+                        'sender_name':formResponse.sender_name.data,
+                        'sender_email':formResponse.sender_email.data,
+                        'sender_phone':formResponse.sender_phone.data, 
+                        'response':formResponse.response.data, 
+                        'sender_function':formResponse.sender_function.data})
+
         flash(f'Для подтверждения, скопируйте и отправьте код: {key}', category='confirmation')
-        return redirect(url_for('mailservice.confirm', key=key))
+        resp = make_response(redirect(url_for('mailservice.confirm', key=key)))
+        resp.set_cookie('key', key)
+        resp.set_cookie('data', data)
+        return resp
 
     return render_template('response.html', formResponse=formResponse)
 
 @bp.route("/confirm/<key>", methods=["GET", "POST"])
 def confirm(key):
-    print(f"key={key}")
     formConfirm = ConfirmForm()
     if formConfirm.validate_on_submit():
         current_uuid = formConfirm.current_uuid.data
-
-        if current_uuid in uuid_list:
-            data = message_list[current_uuid]
+        uuid = request.cookies.get('key')
+        data = json.loads(request.cookies.get('data'))
+        print(data)
+        if current_uuid == uuid:
             response = Response()
             response.fullname = data['sender_name']
             response.organization = data['sender_company']
@@ -51,10 +55,11 @@ def confirm(key):
             db.session.add(response)
             db.session.commit()
 
-            del message_list[current_uuid]
-            uuid_list.remove(current_uuid)
             flash('Отзыв успешно отправлен', category='confirmation_success')
-            return redirect(url_for('main.index'))
+            resp = make_response(redirect(url_for('main.index')))
+            resp.delete_cookie('data')
+            resp.delete_cookie('key')
+            return resp
 
         flash(f'Неверный код подтверждения, скопируйте и отправьте код: {key}', category='confirmation_fail')
         return redirect(url_for('mailservice.confirm',key=key))
