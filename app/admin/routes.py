@@ -19,7 +19,7 @@ def index():
         response.readed = True
         db.session.add(response)
         db.session.commit()
-    unreaded_resp = Response.query.filter(Response.readed==False).order_by(Response.id.desc())
+    unreaded_resp = Response.query.filter(Response.readed==False, Response.verified==True).order_by(Response.id.desc())
     return render_template("admin_index.html", unreaded_response=unreaded_resp,formReaded=formReaded)
 
 
@@ -27,7 +27,7 @@ def index():
 @bp.route("/admin/response/", methods = ["GET"])
 @login_required
 def response():
-    all_resp = Response.query.order_by(Response.id.desc())
+    all_resp = Response.query.filter(Response.verified==True).order_by(Response.id.desc())
     return render_template("admin_response.html", all_response=all_resp)
 
 # выход администратора

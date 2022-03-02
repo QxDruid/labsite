@@ -67,7 +67,6 @@ class News(db.Model):
         db.session.add(news)
         db.session.commit()
 
-
 class Response(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     fullname  = db.Column(db.String(256))
@@ -77,6 +76,7 @@ class Response(db.Model):
     phone = db.Column(db.String(256))
     text = db.Column(db.String)
     readed = db.Column(db.Boolean)
+    verified = db.Column(db.Boolean)
     datetime = db.Column(db.TIMESTAMP,  default=datetime.datetime.now())
 
     def __repr__(self):

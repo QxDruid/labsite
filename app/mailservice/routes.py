@@ -20,17 +20,25 @@ def response():
     if formResponse.validate_on_submit():        
         alphabet = '123456789'
         key = ''.join(secrets.choice(alphabet) for i in range(5))  # for a 5-character password
-        data=json.dumps({'sender_company':formResponse.sender_company.data, 
-                        'sender_name':formResponse.sender_name.data,
-                        'sender_email':formResponse.sender_email.data,
-                        'sender_phone':formResponse.sender_phone.data, 
-                        'response':formResponse.response.data, 
-                        'sender_function':formResponse.sender_function.data})
+   
+        response = Response()
+        response.fullname = formResponse.sender_name.data
+        response.organization = formResponse.sender_company.data
+        response.email = formResponse.sender_email.data
+        response.position = formResponse.sender_function.data
+        response.text = formResponse.response.data
+        response.phone = formResponse.sender_phone.data
+        response.readed = False
+        response.verified = False
+
+        db.session.add(response)
+        db.session.commit()
 
         flash(f'Для подтверждения, скопируйте и отправьте код: {key}', category='confirmation')
         resp = make_response(redirect(url_for('mailservice.confirm', key=key)))
         resp.set_cookie('key', key)
-        resp.set_cookie('data', data)
+        resp.set_cookie('resp_id', str(response.id))
+  
         return resp
 
     return render_template('response.html', formResponse=formResponse)
@@ -41,23 +49,16 @@ def confirm(key):
     if formConfirm.validate_on_submit():
         current_uuid = formConfirm.current_uuid.data
         uuid = request.cookies.get('key')
-        data = json.loads(request.cookies.get('data'))
-        print(data)
+        resp_id = int(request.cookies.get('resp_id'))
+
         if current_uuid == uuid:
-            response = Response()
-            response.fullname = data['sender_name']
-            response.organization = data['sender_company']
-            response.email = data['sender_email']
-            response.position = data['sender_function']
-            response.text = data['response']
-            response.phone = data['sender_phone']
-            response.readed = False
+            response = Response.query.filter_by(id=resp_id).first()
+            response.verified = True
             db.session.add(response)
             db.session.commit()
 
             flash('Отзыв успешно отправлен', category='confirmation_success')
             resp = make_response(redirect(url_for('main.index')))
-            resp.delete_cookie('data')
             resp.delete_cookie('key')
             return resp
 
