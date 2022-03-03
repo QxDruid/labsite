@@ -15,10 +15,10 @@ pipeline {
 
             steps {
                 script {
-                    RES = sh(script: "docker rm -f \$(docker ps | grep labsite_dev | cut -f 1 -d ' ') || true", returnStdout: true)
+                    RES = sh(script: "docker rm -f labsite_dev || true", returnStdout: true)
                     echo "${RES}"
                 }
-                sh "docker run -d -p5000:8000 --rm -v /home/web_host/webserver_dev/static/:/app/static/ --env-file /home/web_host/webserver_dev/envfile labsite_dev"
+                sh "docker run -d -p5000:8000 --rm --name labsite_dev -v /home/web_host/webserver_dev/static/:/app/static/ --env-file /home/web_host/webserver_dev/envfile labsite_dev"
             }
         }
 
@@ -29,16 +29,16 @@ pipeline {
 
             steps {
                 script {
-                    RES = sh(script: "docker rm -f \$(docker ps | grep labsite_master | cut -f 1 -d ' ') || true", returnStdout: true)
+                    RES = sh(script: "docker rm -f labsite_master || true", returnStdout: true)
                     echo "${RES}"
                 }
-                sh "docker run -d -p127.0.0.1:8000:8000 --rm -v /home/web_host/webserver/static/:/app/static/ --env-file /home/web_host/webserver/envfile labsite_master"
+                sh "docker run -d -p127.0.0.1:8000:8000 --rm --name labsite_master -v /home/web_host/webserver/static/:/app/static/ --env-file /home/web_host/webserver/envfile labsite_master"
             }
         }
         stage('Clean') {
             steps {
                 script {
-                    RES = sh(script: "docker rmi \$(docker images -f “dangling=true” -q) || true", returnStdout: true)
+                    RES = sh(script: "docker rmi \$(docker images -f dangling=true -q) || true", returnStdout: true)
                     echo "${RES}"
                 }
             }
