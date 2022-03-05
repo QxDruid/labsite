@@ -3,21 +3,5 @@
       <div class="card-body">
         <h5 class="card-title"><b>{{ post.Title }}</b></h5>
         <p class="card-text">{{ post.Description | safe }}</p>
-        {% if post.Fulltext %}
-          <a href="#" class="btn btn-primary">Читать полностью</a>
-        {% endif %}
-
-        {% if current_user.is_authenticated %}
-        <form action="{{ url_for('main.delnews') }}" method="POST" novalidate  style="display:inline-block">
-          <div class="form-group">
-            {{ formDeleteNews.csrf_token() }}
-            {{ formDeleteNews.newsId(value = post.id)}}
-            {{ formDeleteNews.submitDeleteNews(class="btn btn-dark") }}
-          </div>
-        </form>
-        <button type="button" class="btn btn-dark">
-        <a href="{{ url_for('main.editnews', newsId=post.id) }}" style="text-decoration: none; color:white;">Редактировать</a>
-        </button>
-        {% endif %}
     </div>
 </div>

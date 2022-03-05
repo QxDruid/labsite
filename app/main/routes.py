@@ -13,30 +13,6 @@ import json
 @bp.route("/", methods = ["POST", "GET"])
 @bp.route("/index/", methods = ["POST", "GET"])
 def index():
-    formDelete = DeleteImageForm() #Форма удаления картинки из слайдера
-    formSetImage = SetImageForm() #Добавление катринки в слайдер
-    formAddNews = AddNewsForm() # добавить новость(нужна тут для отрисовки) обработка функции в main.addnews
-    formDeleteNews= DeleteNewsForm() # удалить новость(нужна тут для отрисовки) обработка функции в main.delnews
-    
-    # удаление картинки из карусели
-    if formDelete.submitDelete.data and formDelete.validate_on_submit():
-        img = Slider_image.query.filter_by(Index=formDelete.imageIndex.data).first()
-        Slider_image.delete_image(formDelete.imageIndex.data)
-        os.remove(os.path.join(config.basedir,'app/static/{}'.format(img.Image)))
-        return redirect(url_for('main.index'))
-
-    # добавление картинки в карусель
-    if  formSetImage.submitUpload.data  and formSetImage.validate_on_submit():
-        f = formSetImage.image.data
-        filename = secure_filename(f.filename)
-        f.save(os.path.join(config.basedir,'app/static/img/SliderImages/{}'.format(filename)))
-
-        Slider_image.set_image(formSetImage.index.data, 'img/SliderImages/{}'.format(filename))
-
-        return redirect(url_for('main.index'))
-
-    # ----------- рендер страницы если запрос "GET" -----------
-
     # создаем пагинатор для разбиения новостей на страницы
     page = request.args.get('page')
     if not page:
@@ -50,10 +26,6 @@ def index():
     return render_template("index.html", 
         slider_photos=photos,
         posts=posts,
-        formDelete=formDelete,
-        formSetImage=formSetImage,
-        formAddNews=formAddNews,
-        formDeleteNews=formDeleteNews,
         lab_description='main_text.html'
     )
 
@@ -80,76 +52,6 @@ def staff():
         staff=staff
     )
 
-
-
-# редактор новости
-@bp.route("/editnews/<newsId>",methods=["POST", "GET"])
-@login_required
-def editnews(newsId):
-    form = AddNewsForm()
-    post = News.query.get(newsId)
-    if form.validate_on_submit(): 
-        if form.image.data:
-            try:
-                os.remove(os.path.join(config.basedir, 'app/static/{}'.format(post.Image)))
-            except:
-                pass
-            f = form.image.data
-            filename=secure_filename(f.filename)
-            f.save(os.path.join(config.basedir, 'app/static/img/NewsImages/{}'.format(filename)))
-            post.Image = 'img/NewsImages/{}'.format(filename)
-
-        post.Title = form.title.data
-        post.Description = form.description.data
-        post.Fulltext = form.fulltext.data
-        db.session.add(post)
-        db.session.commit()
-        return redirect(url_for('main.editnews', newsId=post.id))
-
-
-    
-    form.title.data = post.Title
-    form.description.data = post.Description
-    form.fulltext.data = post.Fulltext
-
-    return render_template("editnews.html", post=post, form=form)
-
-# обработка удаления новостей
-@bp.route('/delnews/', methods=["POST"])
-@login_required
-def delnews():
-    formDeleteNews= DeleteNewsForm()
-    if formDeleteNews.submitDeleteNews.data and formDeleteNews.validate_on_submit():
-        news = News.query.filter_by(id=formDeleteNews.newsId.data).first()
-        db.session.delete(news)
-        db.session.commit()
-        try:
-            os.remove(os.path.join(config.basedir, 'app/static/{}'.format(news.Image)))
-        except:
-            pass
-    return redirect(url_for('main.index'))
-
-# обработка добавления новостей
-@bp.route('/addnews/', methods=["POST"])
-@login_required
-def addnews():
-
-    formAddNews = AddNewsForm()
-    if formAddNews.validate_on_submit():
-        if formAddNews.image.data:
-            f = formAddNews.image.data
-            filename = secure_filename(f.filename)
-            f.save(os.path.join(config.basedir, 'app/static/img/NewsImages/{}'.format(filename)))
-        else:
-            filename = None
-
-        News.set_news('img/NewsImages/{}'.format(filename), 
-            formAddNews.title.data, 
-            formAddNews.description.data, 
-            formAddNews.fulltext.data
-        )
-
-    return redirect(url_for("main.index"))
 
 @bp.route('/addPerson/', methods=["POST"])
 @login_required

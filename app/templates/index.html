@@ -80,25 +80,7 @@
             </div>
             {% endif %}
 	</div>
-    
-        <div class=="col-lg-3 col-md-1 col-sm-0 col-0"></div>
 	</div>
-
-            {% if current_user.is_authenticated %}
-            <form action="" method="post" enctype="multipart/form-data" novalidate>
-                <div class="form-group col-10 col-sm-7 col-md-9 col-lg-6 col-xl-5" id="addSliderPhoto">
-                    <h3>Добавить фото</h3>
-                    {{ formSetImage.csrf_token() }}
-
-                
-                    {{formSetImage.image(class="form-control col-12")}}
-                    <br />
-                    {{formSetImage.index(class="col-3")}}
-                    {{formSetImage.index.label(class="col-2")}}
-                    {{formSetImage.submitUpload(class="btn btn-dark") }}
-                </div>
-            </form>
-            {% endif %}
               <! -- Текст главной страницы (на мобильном экране скрыт и доступен по ссылке) -->
             <div id="content">
               
@@ -112,36 +94,6 @@
         <div id="sidebar" class="col-sm-12 col-md-4 col-lg-3 col-xl-3">
             <!-- структура новости -->
             <div class="container">
-        
-            <! -- ADD NEWS FORM -->
-            {% if current_user.is_authenticated %}
-            <form action="{{ url_for('main.addnews') }}" method="POST" enctype="multipart/form-data" novalidate>
-                <div class="form-group col-sm-12 col-md-12 col-lg-12 col-xl-12" id="addNewsForm">
-                    <h3>Добавить новость</h3>
-                    <div class="form-group">
-                    {{ formAddNews.csrf_token() }}
-                    {{ formAddNews.image.label }}
-                    {{ formAddNews.image(class="form-control") }}
-                    </div>
-                    <div class="form-group">
-                    {{ formAddNews.title.label }}
-                    {{ formAddNews.title(class="form-control") }}
-                    </div>
-                    <div class="form-group">
-                    {{ formAddNews.description.label }}
-                    {{ formAddNews.description(class="form-control") }}
-                    </div>
-                    <div class="form-group">
-                    {{ formAddNews.fulltext.label }}
-                    {{ formAddNews.fulltext(class="form-control") }}
-                    </div>
-                    <br />
-                    {{ formAddNews.submitAddNews(class="btn btn-dark") }}
-
-                </div>
-            </form>
-            {% endif %}
-
             <div class="text-center" id="news_header">
                 <span class="h2">Новости</span>
             </div>  

@@ -1,0 +1,104 @@
+{% extends "admin_base.html" %}
+
+{% block title %} Админ Главная{% endblock %}
+{% block active_admin_news %} active {% endblock %}
+
+{% block admin_content %}
+
+<div class="row justify-content-center">
+    <div class="col-10 col-sm-10 col-md-6 col-lg-4 col-xl-4 justify-content-center p-4">
+        <button class="btn btn-primary col-10 " type="button" data-toggle="collapse" data-target="#collapsedFormNews" aria-expanded="false" aria-controls="collapseExample">
+            Добавить новость
+        </button>
+        <div class="form-group  collapse"  id="collapsedFormNews">
+            <form action="{{ url_for('admin.addnews') }}" method="POST" enctype="multipart/form-data" novalidate>
+                <div class="form-group">
+                    <h3>Добавить новость</h3>
+                    <div class="form-group">
+                    {{ formAddNews.csrf_token() }}
+                    {{ formAddNews.image.label }}
+                    {{ formAddNews.image(class="form-control") }}
+                    </div>
+                    <div class="form-group">
+                    {{ formAddNews.title.label }}
+                    {{ formAddNews.title(class="form-control") }}
+                    </div>
+                    <div class="form-group">
+                    {{ formAddNews.description.label }}
+                    {{ formAddNews.description(class="form-control") }}
+                    </div>
+                    <br />
+                    <div class="justify-content-center">
+                        {{ formAddNews.submitAddNews(class="btn btn-dark") }}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    
+    {% for post in posts.items %}
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 text-center">
+        <div class="card mb-11 staff_card" >
+        <div class="row no-gutters">
+            <div class="col-md-5 col-xl-3">
+                <img src="{{url_for('static', filename=post.Image)}}" class="card-img-top" alt="">
+            </div>
+            <div class="col-md-7 col-xl-7 card" style="padding: 30px;">
+                <h5 class="card-title"><b>{{ post.Title }}</b></h5>
+                <p class="card-text">
+                    {{ post.Description}}
+                </p>
+                {% if post.Fulltext %}
+                <a href="#" class="btn btn-primary">Читать полностью</a>
+                {% endif %}
+            </div>
+            <div class="col-md-1 col-xl-1" style="padding: 30px;">
+                <form action="{{ url_for('admin.delnews') }}" method="POST" novalidate  style="display:inline-block">
+                    <div class="form-group">
+                        {{ formDeleteNews.csrf_token() }}
+                        {{ formDeleteNews.newsId(value = post.id)}}
+                        {{ formDeleteNews.submitDeleteNews(class="btn btn-dark", value = "Удалить Новость") }}
+                    </div>
+                </form>
+                <div class="dropleft">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                        Редактировать новость
+                    </button>
+                    <form class="dropdown-menu p-4" action="{{ url_for('admin.editnews') }}" style="width: 500px;" action="" method="POST" enctype="multipart/form-data" novalidate>
+                        <div class="form-group" id="addNewsForm">
+                            <div class="form-group">
+                            {{ form.csrf_token() }}
+                            {{form.newsId(value = post.id)}}
+                            {{ form.image.label }}
+                            {{ form.image(class="form-control") }}
+                            </div>
+                            <div class="form-group">
+                            {{ form.title.label }}
+                            
+                            {% for error in form.errors.title %}
+                                <div class="alert alert-danger" role="alert" style="margin: 5px auto">
+                                    {{error}}
+                                </div>
+                            {% endfor %}
+                            {{ form.title(class="form-control", value=post.Title) }}
+                            </div>
+                            <div class="form-group">
+                            {{ form.description.label }}
+                            {% set f = form.description.process_data(post.Description) %}
+                            {{ form.description(class="form-control") }}
+                            </div>
+                            <br />
+                            {{ form.submitAddNews(class="btn btn-dark") }}
+        
+                        </div>
+                    </form>
+                </div>
+            </div>
+          
+        </div>
+    </div>
+</div>
+{% endfor %}
+</div>
+{% endblock %}

@@ -21,6 +21,7 @@ class SetImageForm(FlaskForm):
     submitUpload = SubmitField('Загрузить')
 
 class AddNewsForm(FlaskForm):
+    newsId = HiddenField()
     image = FileField('load image', validators=[FileAllowed(["jpg", "png"], 'Images only!')])
     title = StringField('title', validators=[DataRequired()])
     description = TextAreaField('description', validators=[DataRequired()])

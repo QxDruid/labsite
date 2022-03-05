@@ -18,7 +18,7 @@
             <a class="nav-link {% block active_admin_index %}{% endblock %}" href="{{url_for('admin.index')}}">Главная</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link disabled {% block active_admin_news %}{% endblock %}" href="{{url_for('admin.news')}}">Новости</a>
+            <a class="nav-link {% block active_admin_news %}{% endblock %}" href="{{url_for('admin.news')}}">Новости</a>
         </li>
         <li class="nav-item">
             <a class="nav-link disabled {% block active_admin_gallery %}{% endblock %}" href="{{url_for('admin.staff')}}">Галерея</a>
