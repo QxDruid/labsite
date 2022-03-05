@@ -53,18 +53,6 @@
                     {% for photo in slider_photos %}
                         <div class="carousel-item {% if photo.Index == 0 %} active {% endif %}"  >
                             <img src="{{url_for('static',filename=photo.Image)}}" class="d-block img-fluid mx-auto" alt="..." style="max-height: 300px; width: auto">
-                            {% if current_user.is_authenticated %}
-                            <div class="carousel-caption" >
-                                <form action="" method="post" novalidate>
-                                    <div class="form-group">
-                                    {{ formDelete.csrf_token() }}
-                                    {{ formDelete.imageIndex(value =  photo.Index) }}
-                                    {{ formDelete.submitDelete(class="btn btn-outline-dark") }}
-                                    </div>
-                                </form>
-                            </div>
-
-                            {% endif %}
                         </div>
                     {% endfor %}
                 </div>
