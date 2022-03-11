@@ -15,7 +15,7 @@ pipeline {
                     echo "${RES}"
                 }
 
-                sh "docker run -it --rm --name labsite_${env.GIT_BRANCH}_test -v /home/web_host/webserver_test/static/:/app/static/ labsite_${env.GIT_BRANCH} python3 tests.py"
+                sh "docker run -i --rm --name labsite_${env.GIT_BRANCH}_test -v /home/web_host/webserver_test/static/:/app/static/ labsite_${env.GIT_BRANCH} python3 tests.py"
                 
             }
         }
