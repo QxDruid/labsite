@@ -6,6 +6,7 @@ COPY app/ /app/
 COPY migrations/ /migrations/
 COPY config.py .
 COPY labsite.py .
+COPY tests.py .
 COPY requirments.txt .
 
 RUN pip3 install -r requirments.txt && pip3 install gunicorn

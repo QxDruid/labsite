@@ -8,6 +8,18 @@ pipeline {
             }
         }
 
+        stage('Test') {
+            steps {
+                script {
+                    RES = sh(script: "docker rm -f labsite_${env.GIT_BRANCH}_test || true" , returnStdout: true)
+                    echo "${RES}"
+                }
+
+                sh "docker run -it --rm --name labsite_${env.GIT_BRANCH}_test -v /home/web_host/webserver_test/static/:/app/static/ labsite_${env.GIT_BRANCH} python3 tests.py"
+                
+            }
+        }
+
         stage('Deploy Staging') {
             when {
                 expression {env.GIT_BRANCH == 'dev'}

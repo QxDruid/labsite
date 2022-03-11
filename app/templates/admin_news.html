@@ -15,7 +15,9 @@
                 <div class="form-group">
                     <h3>Добавить новость</h3>
                     <div class="form-group">
-                    {{ formAddNews.csrf_token() }}
+                    {% if 'csrf_token' in formAddNews %}
+                        {{ formAddNews.csrf_token() }}
+                    {% endif %}
                     {{ formAddNews.image.label }}
                     {{ formAddNews.image(class="form-control") }}
                     </div>
@@ -56,7 +58,9 @@
             <div class="col-md-1 col-xl-1" style="padding: 30px;">
                 <form action="{{ url_for('admin.delnews') }}" method="POST" novalidate  style="display:inline-block">
                     <div class="form-group">
-                        {{ formDeleteNews.csrf_token() }}
+                        {% if 'csrf_token' in formDeleteNews %}
+                            {{ formDeleteNews.csrf_token() }}
+                        {% endif %}
                         {{ formDeleteNews.newsId(value = post.id)}}
                         {{ formDeleteNews.submitDeleteNews(class="btn btn-dark", value = "Удалить Новость") }}
                     </div>
@@ -68,7 +72,9 @@
                     <form class="dropdown-menu p-4" action="{{ url_for('admin.editnews') }}" style="width: 500px;" action="" method="POST" enctype="multipart/form-data" novalidate>
                         <div class="form-group" id="addNewsForm">
                             <div class="form-group">
-                            {{ form.csrf_token() }}
+                            {% if 'csrf_token' in form %}
+                                {{ form.csrf_token() }}
+                            {% endif %}
                             {{form.newsId(value = post.id)}}
                             {{ form.image.label }}
                             {{ form.image(class="form-control") }}

@@ -98,7 +98,7 @@ def editnews():
 @login_required
 def delnews():
     formDeleteNews= DeleteNewsForm()
-    if formDeleteNews.submitDeleteNews.data and formDeleteNews.validate_on_submit():
+    if formDeleteNews.newsId.data and formDeleteNews.validate_on_submit():
         news = News.query.filter_by(id=formDeleteNews.newsId.data).first()
         db.session.delete(news)
         db.session.commit()
