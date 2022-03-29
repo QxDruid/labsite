@@ -10,8 +10,8 @@ import config
 import json
 
 # Главная страница
-@bp.route("/", methods = ["POST", "GET"])
-@bp.route("/index/", methods = ["POST", "GET"])
+@bp.route("/", methods = ["GET"])
+@bp.route("/index/", methods = ["GET"])
 def index():
     # создаем пагинатор для разбиения новостей на страницы
     page = request.args.get('page')
@@ -28,6 +28,13 @@ def index():
         posts=posts,
         lab_description='main_text.html'
     )
+
+
+# Руководство в области качества
+@bp.route("/quality/", methods = ["GET"])
+def quality():
+
+    return render_template("quality.html")
 
 # рендер страницы персонала
 @bp.route("/staff/", methods = ["POST", "GET"])

@@ -18,7 +18,7 @@
 
 <body>
 
-    <header>
+    <header > 
         <nav class="navbar navbar-expand-md navbar-dark bg-dark">
                     <a class="navbar-brand" href="{{url_for('main.index')}}">
                         <img src="{{url_for('static',filename='img/brand-icon.svg')}}" width="30" height="30" class="d-inline-block align-top" alt=".">
@@ -37,10 +37,11 @@
                             <a class="nav-link" href="{{url_for('main.index')}}">Главная</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link {% block active_quality %}{% endblock %}" style="font-size: 0.9em; text-align: center; line-height: 1;" href="{{url_for('main.quality')}}">Политика в <br />области качества</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link {% block active_staff %}{% endblock %}" href="{{url_for('main.staff')}}">Сотрудники</a>
                         </li>
-
-        
                         <li class="nav-item">
                             <a class="nav-link {% block active_contacts %}{% endblock %}" href="{{url_for('main.contacts')}}">Контакты</a>
                         </li>
@@ -71,7 +72,7 @@
     {% block content %}
     {% endblock %}
 
-    <footer class="footer bg-dark text-white fixed-bottom">
+    <footer class="footer bg-dark text-white" >
         <div class="container-fluid">
             Footer
         </div>
