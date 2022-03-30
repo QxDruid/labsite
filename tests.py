@@ -92,11 +92,11 @@ class TestNews(unittest.TestCase):
             
         post = posts[0]
         self.assertEqual(post.Title,'Title')
-        self.assertEqual(post.Image, 'img/NewsImages/test.jpg')
+        self.assertEqual(post.Image, 'app/static/images/test.jpg')
         self.assertEqual(post.Description, "Description")
 
     def test_edit_news(self):
-        with open(os.path.join(Config.BASE_DIR, 'app/static/test/test.jpg'), 'rb') as img1:
+        with open(os.path.join(Config.BASE_DIR, 'app/static/images/test/test.jpg'), 'rb') as img1:
                 imgStringIO1 = BytesIO(img1.read())
 
         self.client.post("/addnews/",content_type='multipart/form-data', 
@@ -114,7 +114,7 @@ class TestNews(unittest.TestCase):
 
         self.assertEqual(post.Title,'NewTitle')
         self.assertEqual(post.Description,'NewDescription')
-        self.assertEqual(post.Image, 'img/NewsImages/test.jpg')
+        self.assertEqual(post.Image, 'app/static/images/test.jpg')
  
     def test_delete_news(self):
         self.client.post("/addnews/",content_type='multipart/form-data', 
