@@ -92,7 +92,7 @@ class TestNews(unittest.TestCase):
             
         post = posts[0]
         self.assertEqual(post.Title,'Title')
-        self.assertEqual(post.Image, 'app/static/images/test.jpg')
+        self.assertEqual(post.Image, 'images/news/test.jpg')
         self.assertEqual(post.Description, "Description")
 
     def test_edit_news(self):
@@ -114,7 +114,7 @@ class TestNews(unittest.TestCase):
 
         self.assertEqual(post.Title,'NewTitle')
         self.assertEqual(post.Description,'NewDescription')
-        self.assertEqual(post.Image, 'app/static/images/test.jpg')
+        self.assertEqual(post.Image, 'images/news/test.jpg')
  
     def test_delete_news(self):
         self.client.post("/addnews/",content_type='multipart/form-data', 
