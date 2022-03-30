@@ -18,7 +18,7 @@ def gallery():
     if formDelete.submitDelete.data:
         image_to_delete = Gallery_image.query.get(formDelete.Id.data)
         try:
-            os.remove(os.path.join(config.basedir, f'app/static/{image_to_delete.Image}'))
+            os.remove(os.path.join(config.basedir, f'app/static/gallery/{image_to_delete.Image}'))
         except:
             pass
 
@@ -34,12 +34,12 @@ def gallery():
 
         # Пишем описание и Имя файла которое используется в шаблонах
         new_image.Description = formAddImage.description.data
-        new_image.Image = f'gallery/{new_image.id}.jpg'
+        new_image.Image = f'images/gallery/{new_image.id}.jpg'
 
         # Сохраняем само изображение в папку статик/галерея
         image_file = formAddImage.image.data
         print(image_file)
-        image_file.save(os.path.join(config.basedir,f'app/static/gallery/{new_image.id}.jpg'))
+        image_file.save(os.path.join(config.basedir,f'app/static/images/gallery/{new_image.id}.jpg'))
 
         # коммитим все в базу и делаем редирект обратно
         db.session.add(new_image)

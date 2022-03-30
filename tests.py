@@ -77,7 +77,7 @@ class TestNews(unittest.TestCase):
         assert post.Title == 'Title' and post.Image == 'test.jpg' and post.Description == "Description"
         
     def test_add_news(self):
-        with open(os.path.join(Config.BASE_DIR, 'app/static/test/test.jpg'), 'rb') as img1:
+        with open(os.path.join(Config.BASE_DIR, 'app/static/images/test/test.jpg'), 'rb') as img1:
             imgStringIO1 = BytesIO(img1.read())
         response = self.client.post("/addnews/",content_type='multipart/form-data', 
                                         data={'title':'Title',

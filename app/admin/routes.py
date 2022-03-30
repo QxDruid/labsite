@@ -57,11 +57,11 @@ def addnews():
         if formAddNews.image.data:
             f = formAddNews.image.data
             filename = secure_filename(f.filename)
-            f.save(os.path.join(config.basedir, 'app/static/img/NewsImages/{}'.format(filename)))
+            f.save(os.path.join(config.basedir, 'app/static/images/news/{}'.format(filename)))
         else:
             filename = None
 
-        News.set_news('img/NewsImages/{}'.format(filename), 
+        News.set_news('images/news/{}'.format(filename), 
             formAddNews.title.data, 
             formAddNews.description.data, 
             formAddNews.fulltext.data
@@ -82,8 +82,8 @@ def editnews():
                 pass
             f = form.image.data
             filename=secure_filename(f.filename)
-            f.save(os.path.join(config.basedir, 'app/static/img/NewsImages/{}'.format(filename)))
-            post.Image = 'img/NewsImages/{}'.format(filename)
+            f.save(os.path.join(config.basedir, 'app/static/images/news/{}'.format(filename)))
+            post.Image = 'images/news/{}'.format(filename)
 
         post.Title = form.title.data
         post.Description = form.description.data
