@@ -1,5 +1,5 @@
 <div class="card post">
-        {% if post.Image %}
+        {% if not post.Image == 'images/news/None' %}
         <img src="{{url_for('static', filename=post.Image)}}" class="card-img-top" alt="">
         {% endif %}
       <div class="card-body">
