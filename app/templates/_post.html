@@ -1,5 +1,7 @@
 <div class="card post">
+        {% if post.Image %}
         <img src="{{url_for('static', filename=post.Image)}}" class="card-img-top" alt="">
+        {% endif %}
       <div class="card-body">
         <h5 class="card-title"><b>{{ post.Title }}</b></h5>
         <p class="card-text">{{ post.Description | safe }}</p>

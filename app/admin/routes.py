@@ -123,9 +123,9 @@ def addcarouselimage():
     if  formSetImage.submitUpload.data  and formSetImage.validate_on_submit():
         f = formSetImage.image.data
         filename = secure_filename(f.filename)
-        f.save(os.path.join(config.basedir,'app/static/img/SliderImages/{}'.format(filename)))
+        f.save(os.path.join(config.basedir,'app/static/images/slider/{}'.format(filename)))
 
-        Slider_image.set_image(formSetImage.index.data, 'img/SliderImages/{}'.format(filename))
+        Slider_image.set_image(formSetImage.index.data, 'images/slider/{}'.format(filename))
 
     return redirect(url_for('main.index'))
 
