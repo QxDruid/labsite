@@ -11,11 +11,13 @@ import json
 
 
 @bp.route("/gallery/", methods=["GET"])
+@login_required
 def gallery():
     images = Gallery_image.query.order_by(Gallery_image.id.desc())
     return render_template("gallery.html", image_set=images)
 
 @bp.route("/admin/gallery/", methods=["POST", "GET"])
+@login_required
 def admin_gallery():
     formDelete = DeleteForm()
     formAddImage = SetGalleryImageForm()
