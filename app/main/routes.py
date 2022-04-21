@@ -22,7 +22,7 @@ def index():
 
     posts = News.query.order_by(News.id.desc()).paginate(page, 5, False)
 
-    photos = Slider_image.query.all()
+    photos = Slider_image.query.order_by(Slider_image.Index)
     return render_template("index.html", 
         slider_photos=photos,
         posts=posts,
