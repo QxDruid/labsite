@@ -1,0 +1,57 @@
+{% extends "admin_base.html" %}
+
+{% block title %} Галерея {% endblock title%}
+
+{% block active_admin_gallery %} active {% endblock %}
+
+{% block admin_content%}
+
+<div class="row justify-content-center p-4">
+
+    <div class="col-10 col-sm-10 col-md-6 col-lg-4 col-xl-4 justify-content-center p-4">
+        <button class="btn btn-primary col-10 " type="button" data-toggle="collapse" data-target="#collapsedFormNews" aria-expanded="false" aria-controls="collapseExample">
+            Добавить изображение
+        </button>
+        <div class="form-group  collapse"  id="collapsedFormNews">
+            <form action="{{ url_for('gallery.admin_gallery') }}" method="POST" enctype="multipart/form-data" novalidate>
+                <div class="form-group">
+                    <h3>Добавить новость</h3>
+                    <div class="form-group">
+                        {% if 'csrf_token' in formAddImage %}
+                            {{ formAddImage.csrf_token() }}
+                        {% endif %}
+                        {{ formAddImage.image(class="form-control") }}
+                    </div>
+                    <div class="form-group">
+                        {{ formAddImage.description(class="form-control")}}
+                    </div>
+                    <div class="justify-content-center">
+                        {{ formAddImage.submitUpload(class="btn btn-dark") }}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for image in image_set %}
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-10">
+                <div class="gallery_image" data-title="{{image.Description}}">
+                    <img src="{{url_for('static', filename=image.Image)}}" alt="">
+                        <form action="{{ url_for('gallery.admin_gallery') }}" method="POST" novalidate  style="display:inline-block">
+                            <div class="form-group gallery_image_delete_button">
+                                {{ formDelete.csrf_token() }}
+                                {{ formDelete.Id(value = image.id)}}
+                                {{ formDelete.submitDelete(class="btn btn-dark") }}
+                            </div>
+                        </form>
+                </div>
+
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div style="min-height:40vh"></div>
+
+{% endblock admin_content%}

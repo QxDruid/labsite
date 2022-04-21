@@ -108,6 +108,12 @@ def delnews():
             pass
     return redirect(url_for('admin.news'))
 
+@bp.route('/admin/carousel')
+def carousel():
+    return render_template("admin_carousel.html")
+
+
+
 @bp.route('/carousel/add')
 def addcarouselimage():
     formSetImage=formSetImage()

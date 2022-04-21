@@ -9,8 +9,14 @@ import os
 import config
 import json
 
-@bp.route("/gallery/", methods=["POST", "GET"])
+
+@bp.route("/gallery/", methods=["GET"])
 def gallery():
+    images = Gallery_image.query.order_by(Gallery_image.id.desc())
+    return render_template("gallery.html", image_set=images)
+
+@bp.route("/admin/gallery/", methods=["POST", "GET"])
+def admin_gallery():
     formDelete = DeleteForm()
     formAddImage = SetGalleryImageForm()
     
@@ -24,7 +30,7 @@ def gallery():
 
         db.session.delete(image_to_delete)
         db.session.commit()
-        return redirect(url_for('gallery.gallery'))
+        return redirect(url_for('gallery.admin_gallery'))
 
     if formAddImage.submitUpload.data:
         # Добавляем обьект в сессию чтоб получить уникальный ID и использовать его как имя файла
@@ -44,7 +50,7 @@ def gallery():
         # коммитим все в базу и делаем редирект обратно
         db.session.add(new_image)
         db.session.commit()
-        return redirect(url_for('gallery.gallery'))
+        return redirect(url_for('gallery.admin_gallery'))
 
     images = Gallery_image.query.order_by(Gallery_image.id.desc())
-    return render_template("gallery.html", image_set=images, formDelete=formDelete, formAddImage=formAddImage)
+    return render_template("admin_gallery.html", image_set=images, formDelete=formDelete, formAddImage=formAddImage)
