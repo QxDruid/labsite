@@ -1,3 +1,5 @@
+from ast import Try
+from crypt import methods
 from app.admin import bp
 from flask import render_template, url_for, request, redirect, flash
 from app import db
@@ -109,31 +111,61 @@ def delnews():
     return redirect(url_for('admin.news'))
 
 @bp.route('/admin/carousel')
+@login_required
 def carousel():
-    return render_template("admin_carousel.html")
+    slider = Slider_image.query.order_by(Slider_image.Index)
+    formAddImage = SetImageForm()
+    formDelete=DeleteForm()
+    return render_template("admin_carousel.html", slider=slider, formAddImage=formAddImage, formDelete=formDelete)
 
 
 
-@bp.route('/carousel/add')
+# добавление картинки в карусель
+@bp.route('/admin/carousel/add', methods=["POST"])
+@login_required
 def addcarouselimage():
-    formSetImage=formSetImage()
-    formDelete=formDelete()
-        # удаление картинки из карусели
-    if formDelete.submitDelete.data and formDelete.validate_on_submit():
-        img = Slider_image.query.filter_by(Index=formDelete.imageIndex.data).first()
-        Slider_image.delete_image(formDelete.imageIndex.data)
-        os.remove(os.path.join(config.basedir,'app/static/{}'.format(img.Image)))
-        return redirect(url_for('main.index'))
+    formSetImage=SetImageForm()
 
-    # добавление картинки в карусель
-    if  formSetImage.submitUpload.data  and formSetImage.validate_on_submit():
+    if formSetImage.submitUpload.data:# and formSetImage.validate_on_submit():
+        images = Slider_image.query.all()
+        index = int(formSetImage.index.data)
+        for img in images:
+            if img.Index >= index:
+                img.Index = img.Index + 1
+                db.session.add(img)
+        db.session.commit()
+
         f = formSetImage.image.data
         filename = secure_filename(f.filename)
-        f.save(os.path.join(config.basedir,'app/static/images/slider/{}'.format(filename)))
+        f.save(os.path.join(config.basedir,f'app/static/images/slider/{filename}{index}'))
+        Slider_image.set_image(index, f'images/slider/{filename}{index}')
+    
+    return redirect(url_for('admin.carousel'))
 
-        Slider_image.set_image(formSetImage.index.data, 'images/slider/{}'.format(filename))
+# удаление картинки из карусели
+@bp.route('/admin/carousel/del', methods=["POST"])
+@login_required
+def delcarouselimage():
+    formDelete=DeleteForm()
 
-    return redirect(url_for('main.index'))
+    if formDelete.submitDelete.data:
+        index = int(formDelete.Id.data)
+        img = Slider_image.query.filter_by(Index=index).first()
+        Slider_image.delete_image(index)
+        try:
+            os.remove(os.path.join(config.basedir,'app/static/{}'.format(img.Image)))
+        except:
+            pass
+
+        images = Slider_image.query.all()
+
+        for img in images:
+            if img.Index > index:
+                img.Index = img.Index - 1
+                db.session.add(img)
+        db.session.commit()
+
+    return redirect(url_for('admin.carousel'))
 
 # Страница редактирования персонала
 @bp.route("/admin/staff/", methods = ["GET"])

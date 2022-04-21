@@ -1,0 +1,59 @@
+{% extends "admin_base.html" %}
+
+{% block title %} Админ Главная{% endblock %}
+{% block active_admin_carousel %} active {% endblock %}
+
+{% block admin_content %}
+
+<div class="row justify-content-center">
+    <div class="col-10 col-sm-10 col-md-6 col-lg-4 col-xl-4 justify-content-center p-4">
+        <button class="btn btn-primary col-10 " type="button" data-toggle="collapse" data-target="#collapsedFormNews" aria-expanded="false" aria-controls="collapseExample">
+            Добавить новость
+        </button>
+        <div class="form-group  collapse"  id="collapsedFormNews">
+            <form action="{{ url_for('admin.addcarouselimage') }}" method="POST" enctype="multipart/form-data" novalidate>
+                <div class="form-group">
+                    <h3>Добавить изображение</h3>
+                    <div class="form-group">
+                        {{formAddImage.image.label}}
+                        {{formAddImage.image}}
+                    </div>
+                    <div class="form-group">
+                        {{formAddImage.index.label}}
+                        {{formAddImage.index}}
+                    </div>
+                    <div class="justify-content-center">
+                        {{formAddImage.submitUpload}}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+    {% for image in slider %}
+    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 text-center">
+        <div class="card mb-11 staff_card" >
+            <div class="row no-gutters">
+                <div class="col-md-5 col-xl-3">
+                    <img src="{{url_for('static', filename=image.Image)}}" class="card-img-top" alt="">
+                </div>
+                <div class="col-5" style="padding: 30px;">
+                    <form action="{{ url_for('admin.delcarouselimage') }}" method="POST" novalidate  style="display:inline-block">
+                        <div class="form-group">
+                            {% if 'csrf_token' in formDelete %}
+                            {{ formDelete.csrf_token() }}
+                            {% endif %}
+                            {{ formDelete.Id(value = image.Index)}}
+                            {{ formDelete.submitDelete(class="btn btn-dark", value = "Удалить № {}".format(image.Index)) }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}
