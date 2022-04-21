@@ -11,7 +11,6 @@ import json
 
 
 @bp.route("/gallery/", methods=["GET"])
-@login_required
 def gallery():
     images = Gallery_image.query.order_by(Gallery_image.id.desc())
     return render_template("gallery.html", image_set=images)
