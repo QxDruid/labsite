@@ -1,12 +1,20 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, HiddenField, IntegerField, TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, HiddenField, IntegerField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, InputRequired, Email
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 
 
+class getRandomForm(FlaskForm):
+    type = SelectField("Тип ТССД: ", choices=[
+    	(3, "Интроскоп"), 
+    	(1, "Анализатор паров ВВ"), 
+    	(2, "Металлодетектор")]) 
+    name = StringField('Название',  validators=[DataRequired()])
+    submit = SubmitField('Получить')
+    
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[InputRequired()])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Вход')
 
