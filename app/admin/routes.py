@@ -1,12 +1,13 @@
 from ast import Try
 from crypt import methods
 from app.admin import bp
-from flask import render_template, url_for, request, redirect, flash
+from flask import render_template, url_for, request, redirect, flash, send_from_directory
 from app import db
 from app.db_models import Response, News, User, Slider_image
 from app.forms import *
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.utils import secure_filename
+from .random_gen import create_table, testtable
 import os
 import config
 
@@ -15,7 +16,7 @@ import config
 @bp.route("/admin/index/", methods = ["POST", "GET"])
 @login_required
 def index():
-    formReaded= DeleteForm()
+    formReaded = DeleteForm()
     if formReaded.submitDelete.data and formReaded.validate_on_submit():
         response = Response.query.filter_by(id=formReaded.Id.data).first()
         response.readed = True
@@ -31,6 +32,23 @@ def index():
 def response():
     all_resp = Response.query.filter(Response.verified==True).order_by(Response.id.desc())
     return render_template("admin_response.html", all_response=all_resp)
+
+# Обработчик просмотра всех отзывов
+@bp.route("/admin/random/", methods = ["POST", "GET"])
+@login_required
+def random():
+    choices=(0, "BB", "Metal", "Introskope")
+    #directory = os.path.join(config.basedir, 'app/tmp')
+    form = getRandomForm()
+    if form.submit.data:
+        tssd_type = form.type.data
+        filename = f"{choices[int(tssd_type)]}_{form.name.data}"
+        create_table(f'/app/tmp/{filename}', int(tssd_type))
+        return send_from_directory("/app/tmp/", f"{filename}.xls", as_attachment=True)
+        
+    return render_template("admin_random.html", form=form)
+
+    
 
 # Страница управления новостями
 @bp.route("/admin/news/", methods = ["GET", "POST"])
